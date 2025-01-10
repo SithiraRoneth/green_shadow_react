@@ -1,0 +1,33 @@
+import './App.css'
+import {createBrowserRouter, RouterProvider} from "react-router";
+import RootLayout from "./components/RootLayout.tsx";
+import Crops from "./pages/Crops.tsx";
+import Fields from "./pages/Fields.tsx";
+import {Provider} from "react-redux";
+import store from "./store/Store.ts";
+import Staff from "./pages/Staff.tsx";
+import Vehicles from "./pages/Vehicles.tsx";
+import Profile from "./pages/Profile.tsx";
+
+function App() {
+    const routes = createBrowserRouter([
+        {
+            path: '', element: <RootLayout/>,
+            children: [
+                {path:'/crops', element:<Crops/>},
+                {path: '/fields', element: <Fields/>},
+                {path: '/staffs', element: <Staff/>},
+                {path: '/vehicles', element: <Vehicles/>},
+                {path: '/profiles', element: <Profile/>},
+            ]
+        }
+    ])
+
+    return (
+        <Provider store={store}>
+            <RouterProvider router={routes}/>
+        </Provider>
+    )
+}
+
+export default App
