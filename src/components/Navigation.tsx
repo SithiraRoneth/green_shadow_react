@@ -203,6 +203,14 @@ export default function Navigation() {
                             Vehicles
                         </Link>
                     </li>
+                    <li>
+                        <Link
+                            to="/equips"
+                            className="hover:text-green-600 transition duration-300"
+                        >
+                            Equipments
+                        </Link>
+                    </li>
                 </ul>
 
                 {/* Profile Icon */}
