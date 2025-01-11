@@ -8,6 +8,7 @@ import store from "./store/Store.ts";
 import Staff from "./pages/Staff.tsx";
 import Vehicles from "./pages/Vehicles.tsx";
 import Profile from "./pages/Profile.tsx";
+import Equipment from "./pages/Equipment.tsx";
 
 function App() {
     const routes = createBrowserRouter([
@@ -19,6 +20,7 @@ function App() {
                 {path: '/staffs', element: <Staff/>},
                 {path: '/vehicles', element: <Vehicles/>},
                 {path: '/profiles', element: <Profile/>},
+                {path:'/equips', element: <Equipment/>}
             ]
         }
     ])
