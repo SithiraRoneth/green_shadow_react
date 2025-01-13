@@ -1,12 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
-import {Plus, Trash} from "lucide-react";
+import {CircleX, Plus, Save, Trash} from "lucide-react";
 import {addField, deleteField, updateField} from "../reducers/FieldSlice.ts";
 
 export default function Fields(){
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedField, setSelectedField] = useState(null); // To sto
+    const [selectedField, setSelectedField] = useState(null);
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const fields = useSelector((state) => state.fields);
     const [formData, setFormData] = useState({
@@ -103,7 +103,7 @@ export default function Fields(){
                                     placeholder="Enter Field Code"
                                     value={formData.fieldCode}
                                     onChange={handleChange}
-                                    disabled={isUpdateMode} // Prevent editing cropCode during update
+                                    disabled={isUpdateMode}
                                 />
                             </div>
 
@@ -149,23 +149,23 @@ export default function Fields(){
                         {/* Modal Actions */}
                         <div className="mt-6 flex justify-end space-x-2">
                             <button
-                                className="bg-gray-300 text-black px-4 py-2 rounded"
+                                className=" text-black px-4 py-2 rounded"
                                 onClick={closeModal}
                             >
-                                Close
+                                <CircleX/>
                             </button>
                             <button
                                 className="bg-green-500 text-white px-4 py-2 rounded"
                                 onClick={saveField}
                             >
-                                Save
+                                <Save/>
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Crop Cards */}
+            {/* Field Cards */}
             <div className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {fields.map((field) => (
                     <div
@@ -174,7 +174,7 @@ export default function Fields(){
                         onClick={() => openUpdateModal(field)}
                     >
                         <img
-                            src={field.fieldImage} // Use the file path or URL directly
+                            src={field.fieldImage}
                             className="card-img-top"
                             alt={field.fieldName}
                             loading="lazy"
@@ -189,7 +189,7 @@ export default function Fields(){
                                 e.stopPropagation();
                                 handelDelete(field.fieldCode)
                             }}
-                            className="p-2 bg-red-700 text-white rounded-md hover:bg-red-800 transition-colors"
+                            className="p-2 bg-red-700 text-white rounded-full hover:bg-red-800 transition-colors"
                         >
                             <Trash/>
                         </button>
