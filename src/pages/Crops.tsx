@@ -1,4 +1,4 @@
-import {DeleteIcon, Plus, Trash} from "lucide-react";
+import {CircleX, Plus, Save, Trash} from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {addCrop, deleteCrop, updateCrop} from "../reducers/CropSlice.ts";
@@ -194,16 +194,16 @@ export default function Crops() {
                         {/* Modal Actions */}
                         <div className="mt-6 flex justify-end space-x-2">
                             <button
-                                className="bg-gray-300 text-black px-4 py-2 rounded"
+                                className=" text-black px-4 py-2 rounded"
                                 onClick={closeModal}
                             >
-                                Close
+                                <CircleX/>
                             </button>
                             <button
                                 className="bg-green-500 text-white px-4 py-2 rounded"
                                 onClick={saveData}
                             >
-                                Save
+                                <Save/>
                             </button>
                         </div>
                     </div>
@@ -219,24 +219,24 @@ export default function Crops() {
                         onClick={() => openUpdateModal(crop)}
                     >
                         <img
-                            src={crop.cropImage} // Use the file path or URL directly
+                            src={crop.cropImage}
                             className="card-img-top"
                             alt={crop.cropName}
                             loading="lazy"
                         />
-                        <h3 className="text-lg font-bold">{crop.cropName}</h3>
-                        <p className="mt-2"><strong>Crop Code:</strong>:{crop.cropCode}</p>
-                        <p className="mt-2"><strong>Scientific Name:</strong>:{crop.scientificName}</p>
-                        <p className="mt-2"><strong>Category:</strong>{crop.category}</p>
-                        <p className='mt-2'><strong>Season:</strong>Season: {crop.season}</p>
+                        <h2 className="text-2xl font-bold">{crop.cropName}</h2>
                         <br/>
+                        <p className="mt-2"><strong>Crop Code:</strong>    {crop.cropCode}</p>
+                        <p className="mt-2"><strong>Scientific Name:</strong>  {crop.scientificName}</p>
+                        <p className="mt-2"><strong>Category:</strong>  {crop.category}</p>
+                        <p className='mt-2'><strong>Season:</strong>    {crop.season}</p>
                         <br/>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handelDelete(crop.cropCode)
                             }}
-                            className="p-2 bg-red-700 text-white rounded-md hover:bg-red-800 transition-colors"
+                            className="p-2 bg-red-700 text-white rounded-full hover:bg-red-800 transition-colors"
                         >
                             <Trash/>
                         </button>
