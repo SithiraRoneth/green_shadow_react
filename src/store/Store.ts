@@ -10,7 +10,7 @@ export const Store = configureStore({
         fields: fieldReducer,
         vehicles: vehicleReducer,
         staffs: staffReducer,
-        equipments: equipSlice,
+        equips: equipSlice,
     }
 })
 
