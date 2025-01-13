@@ -2,6 +2,7 @@ import {CircleX, Plus, Save, Trash} from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {addCrop, deleteCrop, updateCrop} from "../reducers/CropSlice.ts";
+import '../Styles/Input&labels.css'
 
 export default function Crops() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,12 +115,12 @@ export default function Crops() {
                         {/* Modal content */}
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="cropCode" className="block text-sm font-medium">Crop Code</label>
+                                <label htmlFor="cropCode" className="custom-label">Crop Code</label>
                                 <input
                                     id="cropCode"
                                     name="cropCode"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Crop Code"
                                     value={formData.cropCode}
                                     onChange={handleChange}
@@ -128,12 +129,12 @@ export default function Crops() {
                             </div>
 
                             <div>
-                                <label htmlFor="cropName" className="block text-sm font-medium">Crop Name</label>
+                                <label htmlFor="cropName" className="custom-label">Crop Name</label>
                                 <input
                                     id="cropName"
                                     name="cropName"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Crop Name"
                                     value={formData.cropName}
                                     onChange={handleChange}
@@ -141,23 +142,23 @@ export default function Crops() {
                             </div>
 
                             <div>
-                                <label htmlFor="cropImage" className="block text-sm font-medium">Crop Image</label>
+                                <label htmlFor="cropImage" className="custom-label">Crop Image</label>
                                 <input
                                     id="cropImage"
                                     name="cropImage"
                                     type="file"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     onChange={handleChange}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="scientificName" className="block text-sm font-medium">Scientific Name</label>
+                                <label htmlFor="scientificName" className="custom-label">Scientific Name</label>
                                 <input
                                     id="scientificName"
                                     name="scientificName"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Scientific Name"
                                     value={formData.scientificName}
                                     onChange={handleChange}
@@ -165,12 +166,12 @@ export default function Crops() {
                             </div>
 
                             <div>
-                                <label htmlFor="category" className="block text-sm font-medium">Crop Category</label>
+                                <label htmlFor="category" className="custom-label">Crop Category</label>
                                 <input
                                     id="category"
                                     name="category"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Crop Category"
                                     value={formData.category}
                                     onChange={handleChange}
@@ -178,12 +179,12 @@ export default function Crops() {
                             </div>
 
                             <div>
-                                <label htmlFor="season" className="block text-sm font-medium">Crop Season</label>
+                                <label htmlFor="season" className="custom-label">Crop Season</label>
                                 <input
                                     id="season"
                                     name="season"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Crop Season"
                                     value={formData.season}
                                     onChange={handleChange}

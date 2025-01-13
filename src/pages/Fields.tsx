@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {CircleX, Plus, Save, Trash} from "lucide-react";
 import {addField, deleteField, updateField} from "../reducers/FieldSlice.ts";
+import '../Styles/Input&labels.css'
 
 export default function Fields(){
     const dispatch = useDispatch();
@@ -94,12 +95,12 @@ export default function Fields(){
                         {/* Modal content */}
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="fieldCode" className="block text-sm font-medium">Field Code</label>
+                                <label htmlFor="fieldCode" className="custom-label">Field Code</label>
                                 <input
                                     id="fieldCode"
                                     name="fieldCode"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Field Code"
                                     value={formData.fieldCode}
                                     onChange={handleChange}
@@ -108,12 +109,12 @@ export default function Fields(){
                             </div>
 
                             <div>
-                                <label htmlFor="fieldName" className="block text-sm font-medium">Field Name</label>
+                                <label htmlFor="fieldName" className="custom-label">Field Name</label>
                                 <input
                                     id="fieldName"
                                     name="fieldName"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Field Name"
                                     value={formData.fieldName}
                                     onChange={handleChange}
@@ -121,7 +122,7 @@ export default function Fields(){
                             </div>
 
                             <div>
-                                <label htmlFor="cropImage" className="block text-sm font-medium">Field Image</label>
+                                <label htmlFor="cropImage" className="custom-label">Field Image</label>
                                 <input
                                     id="fieldImage"
                                     name="fieldImage"
@@ -132,12 +133,12 @@ export default function Fields(){
                             </div>
 
                             <div>
-                                <label htmlFor="fieldLocation" className="block text-sm font-medium">Field Location</label>
+                                <label htmlFor="fieldLocation" className="custom-label">Field Location</label>
                                 <input
                                     id="fieldLocation"
                                     name="fieldLocation"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Scientific Name"
                                     value={formData.fieldLocation}
                                     onChange={handleChange}

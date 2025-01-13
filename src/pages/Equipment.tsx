@@ -2,6 +2,7 @@ import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addEquipment, deleteEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
 import {CircleMinus, CircleX, Save} from "lucide-react";
+import '../Styles/Input&labels.css'
 
 export default function Equipment() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,12 +95,12 @@ export default function Equipment() {
                         {/* Modal content */}
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="equipId" className="block text-sm font-medium">Equipment Code</label>
+                                <label htmlFor="equipId" className="custom-label">Equipment Code</label>
                                 <input
                                     id="equipId"
                                     name="equipId"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Crop Code"
                                     value={formData.equipId}
                                     onChange={handleChange}
@@ -108,12 +109,12 @@ export default function Equipment() {
                             </div>
 
                             <div>
-                                <label htmlFor="equipName" className="block text-sm font-medium">Equipment Name</label>
+                                <label htmlFor="equipName" className="custom-label">Equipment Name</label>
                                 <input
                                     id="equipName"
                                     name="equipName"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Crop Name"
                                     value={formData.equipName}
                                     onChange={handleChange}
@@ -121,12 +122,12 @@ export default function Equipment() {
                             </div>
 
                             <div>
-                                <label htmlFor="equipType" className="block text-sm font-medium">Equipment Type</label>
+                                <label htmlFor="equipType" className="custom-label">Equipment Type</label>
                                 <input
                                     id="equipType"
                                     name="equipType"
                                     type="text"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     placeholder="Enter Equipment Type"
                                     value={formData.equipType}
                                     onChange={handleChange}

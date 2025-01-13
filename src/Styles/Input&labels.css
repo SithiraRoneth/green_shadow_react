@@ -1,0 +1,6 @@
+.custom-input{
+    @apply w-full p-2 border rounded
+}
+.custom-label{
+    @apply block text-sm font-medium
+}
