@@ -1,42 +1,47 @@
-import {CircleX, Plus, Save, Trash} from "lucide-react";
+import { CircleX, Plus, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {addCrop, deleteCrop, updateCrop} from "../reducers/CropSlice.ts";
-import '../Styles/Input&labels.css'
+import { addCrop, deleteCrop, updateCrop } from "../reducers/CropSlice.ts";
+import "../Styles/Input&labels.css";
 
 export default function Crops() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isUpdateMode, setIsUpdateMode] = useState(false); // To distinguish between Add and Update modes
-    const [selectedCrop, setSelectedCrop] = useState(null); // To store the crop being updated
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
+    const [selectedCrop, setSelectedCrop] = useState(null);
     const crops = useSelector((state) => state.crops);
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
         cropCode: "",
         cropName: "",
-        cropImage: "",
+        cropImageFile: null, // Only the image file
         scientificName: "",
         category: "",
-        season: ""
+        season: "",
     });
 
-    // Open modal for adding new crop
     const openModal = () => {
         setFormData({
             cropCode: "",
             cropName: "",
-            cropImage: "",
+            cropImageFile: null, // Reset image file
             scientificName: "",
             category: "",
-            season: ""
+            season: "",
         });
-        setIsUpdateMode(false); // Add mode
+        setIsUpdateMode(false);
         setIsModalOpen(true);
     };
 
-    // Open modal for updating crop
     const openUpdateModal = (crop) => {
-        setFormData(crop);
+        setFormData({
+            cropCode: crop.cropCode,
+            cropName: crop.cropName,
+            cropImageFile: null, // Don't update the image file in edit mode
+            scientificName: crop.scientificName,
+            category: crop.category,
+            season: crop.season,
+        });
         setSelectedCrop(crop);
         setIsUpdateMode(true);
         setIsModalOpen(true);
@@ -47,14 +52,13 @@ export default function Crops() {
         setSelectedCrop(null);
     };
 
-    // Handle input changes
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        if (name === "cropImage") {
-            setFormData({
-                ...formData,
-                [name]: files[0],
-            });
+        if (name === "cropImage" && files.length > 0) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                cropImageFile: files[0], // Temporarily store the image file
+            }));
         } else {
             setFormData({
                 ...formData,
@@ -65,36 +69,49 @@ export default function Crops() {
 
     const saveData = () => {
         if (formData.cropCode && formData.cropName && formData.scientificName && formData.category && formData.season) {
-            if (isUpdateMode) {
-                // Update crop
-                dispatch(updateCrop({ ...formData }));
+            // Prepare image data
+            const reader = new FileReader();
+            if (formData.cropImageFile) {
+                reader.onloadend = () => {
+                    const cropData = {
+                        ...formData,
+                        cropImage: reader.result, // Convert image file to Base64 string
+                    };
+
+                    if (isUpdateMode) {
+                        // Update the crop
+                        dispatch(updateCrop(cropData));
+                    } else {
+                        // Add a new crop
+                        dispatch(addCrop(cropData));
+                    }
+                    closeModal();
+                };
+                reader.readAsDataURL(formData.cropImageFile);
             } else {
-                // Add new crop
-                dispatch(addCrop({ ...formData }));
+                // Save without updating the image if no file is selected
+                if (isUpdateMode) {
+                    dispatch(updateCrop(formData));
+                } else {
+                    dispatch(addCrop(formData));
+                }
+                closeModal();
             }
-            console.log("Data saved/updated", formData);
-            closeModal();
         } else {
             alert("Please fill in all fields");
         }
     };
 
-    const handelDelete = () =>{
-        if (formData.cropCode) {
-            dispatch(deleteCrop({cropCode: formData.cropCode}));
-        } else {
-            alert("Delete Failed, try again !");
-        }
-    }
+    const handleDelete = (cropCode) => {
+        dispatch(deleteCrop({ cropCode }));
+    };
 
     return (
-        <div>
-            {/* Page Header */}
+        <>
             <div className="flex items-center justify-center mt-[1%]">
                 <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl opacity-20 uppercase">Crop Management</h1>
             </div>
 
-            {/* Add Crop Button */}
             <div className="flex items-center justify-center mt-[2%]">
                 <button
                     className="bg-gray-400 text-2xl text-white p-4 rounded-full hover:bg-green-800"
@@ -104,7 +121,6 @@ export default function Crops() {
                 </button>
             </div>
 
-            {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96 md:w-96 lg:w-1/2 xl:w-1/3">
@@ -112,7 +128,6 @@ export default function Crops() {
                             {isUpdateMode ? "Update Crop" : "Add Crop"}
                         </h2>
 
-                        {/* Modal content */}
                         <div className="space-y-4">
                             <div>
                                 <label htmlFor="cropCode" className="custom-label">Crop Code</label>
@@ -124,7 +139,7 @@ export default function Crops() {
                                     placeholder="Enter Crop Code"
                                     value={formData.cropCode}
                                     onChange={handleChange}
-                                    disabled={isUpdateMode} // Prevent editing cropCode during update
+                                    disabled={isUpdateMode}
                                 />
                             </div>
 
@@ -192,26 +207,24 @@ export default function Crops() {
                             </div>
                         </div>
 
-                        {/* Modal Actions */}
                         <div className="mt-6 flex justify-end space-x-2">
                             <button
-                                className=" text-black px-4 py-2 rounded"
+                                className="text-black px-4 py-2 rounded"
                                 onClick={closeModal}
                             >
-                                <CircleX/>
+                                <CircleX />
                             </button>
                             <button
                                 className="bg-green-500 text-white px-4 py-2 rounded"
                                 onClick={saveData}
                             >
-                                <Save/>
+                                <Save />
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Crop Cards */}
             <div className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {crops.map((crop) => (
                     <div
@@ -226,24 +239,24 @@ export default function Crops() {
                             loading="lazy"
                         />
                         <h2 className="text-2xl font-bold">{crop.cropName}</h2>
-                        <br/>
-                        <p className="mt-2"><strong>Crop Code:</strong>    {crop.cropCode}</p>
-                        <p className="mt-2"><strong>Scientific Name:</strong>  {crop.scientificName}</p>
-                        <p className="mt-2"><strong>Category:</strong>  {crop.category}</p>
-                        <p className='mt-2'><strong>Season:</strong>    {crop.season}</p>
-                        <br/>
+                        <br />
+                        <p className="mt-2"><strong>Crop Code:</strong> {crop.cropCode}</p>
+                        <p className="mt-2"><strong>Scientific Name:</strong> {crop.scientificName}</p>
+                        <p className="mt-2"><strong>Category:</strong> {crop.category}</p>
+                        <p className="mt-2"><strong>Season:</strong> {crop.season}</p>
+                        <br />
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                handelDelete(crop.cropCode)
+                                handleDelete(crop.cropCode);
                             }}
                             className="p-2 bg-red-700 text-white rounded-full hover:bg-red-800 transition-colors"
                         >
-                            <Trash/>
+                            <Trash />
                         </button>
                     </div>
                 ))}
             </div>
-        </div>
+        </>
     );
 }

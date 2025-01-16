@@ -133,7 +133,7 @@ import {Axe, ChevronFirst, Flower2, Home, LandPlot, Leaf, PersonStanding, Tracto
 
 export default function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [hoveredLink, setHoveredLink] = useState(null);
+    const [hoveredLink, setHoveredLink] = useState("home");
 
     return (
         <header className="bg-green-900 shadow-lg text-white font-bold mt-5  mx-4 md:mx-12 rounded-l-full rounded-r-full">
@@ -165,7 +165,7 @@ export default function Navigation() {
                 >
                     <li>
                         <Link
-                            to="/dash"
+                            to="/home"
                             className="hover:text-green-600 transition duration-300 felx items-center"
                             onMouseEnter={() => setHoveredLink("home")}
                             onMouseLeave={() => setHoveredLink(null)}
