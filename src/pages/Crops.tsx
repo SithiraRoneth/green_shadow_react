@@ -14,7 +14,7 @@ export default function Crops() {
     const [formData, setFormData] = useState({
         cropCode: "",
         cropName: "",
-        cropImageFile: null, // Only the image file
+        cropImageFile: null,
         scientificName: "",
         category: "",
         season: "",
@@ -24,7 +24,7 @@ export default function Crops() {
         setFormData({
             cropCode: "",
             cropName: "",
-            cropImageFile: null, // Reset image file
+            cropImageFile: null,
             scientificName: "",
             category: "",
             season: "",
@@ -37,7 +37,7 @@ export default function Crops() {
         setFormData({
             cropCode: crop.cropCode,
             cropName: crop.cropName,
-            cropImageFile: null, // Don't update the image file in edit mode
+            cropImageFile: null,
             scientificName: crop.scientificName,
             category: crop.category,
             season: crop.season,
@@ -57,7 +57,7 @@ export default function Crops() {
         if (name === "cropImage" && files.length > 0) {
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                cropImageFile: files[0], // Temporarily store the image file
+                cropImageFile: files[0],
             }));
         } else {
             setFormData({
@@ -75,21 +75,18 @@ export default function Crops() {
                 reader.onloadend = () => {
                     const cropData = {
                         ...formData,
-                        cropImage: reader.result, // Convert image file to Base64 string
+                        cropImage: reader.result,
                     };
 
                     if (isUpdateMode) {
-                        // Update the crop
                         dispatch(updateCrop(cropData));
                     } else {
-                        // Add a new crop
                         dispatch(addCrop(cropData));
                     }
                     closeModal();
                 };
                 reader.readAsDataURL(formData.cropImageFile);
             } else {
-                // Save without updating the image if no file is selected
                 if (isUpdateMode) {
                     dispatch(updateCrop(formData));
                 } else {

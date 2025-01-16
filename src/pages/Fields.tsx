@@ -4,74 +4,100 @@ import {CircleX, Plus, Save, Trash} from "lucide-react";
 import {addField, deleteField, updateField} from "../reducers/FieldSlice.ts";
 import '../Styles/Input&labels.css'
 
-export default function Fields(){
+export default function Fields() {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedField, setSelectedField] = useState(null);
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const fields = useSelector((state) => state.fields);
     const [formData, setFormData] = useState({
-        fieldCode : '',
-        fieldName : '',
-        fieldImage : '',
-        fieldLocation : ''
+        fieldCode: '',
+        fieldName: '',
+        fieldImage: null,
+        fieldLocation: ''
     })
 
-    const openModal = () =>{
+    const openModal = () => {
         setFormData({
-            fieldCode : '',
-            fieldName : '',
-            fieldImage : '',
-            fieldLocation : ''
+            fieldCode: '',
+            fieldName: '',
+            fieldImage: null,
+            fieldLocation: ''
         });
 
         setIsUpdateMode(false);
         setIsModalOpen(true);
     }
-    const openUpdateModal = (field) =>{
-        setFormData(field);
+    const openUpdateModal = (field) => {
+        setFormData({
+            fieldCode: field.fieldCode,
+            fieldName: field.fieldName,
+            fieldImage: null,
+            fieldLocation: field.fieldLocation,
+        });
         setSelectedField(field);
         setIsUpdateMode(true);
         setIsModalOpen(true);
     }
-    const closeModal =() =>{
+    const closeModal = () => {
         setIsModalOpen(false);
         setSelectedField(null);
     }
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        const {name, value, files} = e.target;
+        if (name === 'fieldImage' && files.length > 0) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                fieldImage: files[0],
+            }));
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            })
+        }
     };
 
-    const saveField = () =>{
-        if(formData.fieldCode && formData.fieldName && formData.fieldImage && formData.fieldLocation){
-            if (isUpdateMode) {
-                dispatch(updateField({ ...formData }));
+    const saveField = () => {
+        if (formData.fieldCode && formData.fieldName && formData.fieldLocation) {
+
+            const reader = new FileReader();
+            if (formData.fieldImage) {
+                reader.onloadend = () => {
+                    const fieldData = {
+                        ...formData,
+                        fieldImage: reader.result,
+                    };
+                    if (isUpdateMode) {
+                        dispatch(updateField(fieldData));
+                    } else {
+                        dispatch(addField(fieldData));
+                    }
+                    closeModal();
+                };
+                reader.readAsDataURL(formData.fieldImage);
             }else {
-                dispatch(addField({ ...formData }));
+                if (isUpdateMode) {
+                    dispatch(updateField(formData));
+                }else {
+                    dispatch(addField(formData));
+                }
+                closeModal();
             }
-            console.log("Data save/updated", formData)
-            closeModal();
-        }else {
+        } else {
             alert("Please fill in all fields");
         }
     };
 
-    const handelDelete =() =>{
-        if (formData.fieldCode){
-            dispatch(deleteField({fieldCode: formData.fieldCode}));
-        }else{
-            alert("Delete Failed, try again !");
-        }
+    const handelDelete = (fieldCode) => {
+        dispatch(deleteField({fieldCode}));
     }
-    return(
+    return (
         <div>
             {/* Page Header */}
             <div className="flex items-center justify-center mt-[1%]">
-                <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl opacity-20 uppercase">Field Management</h1>
+                <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl opacity-20 uppercase">Field
+                    Management</h1>
             </div>
 
             {/* Add Field Button */}
@@ -80,7 +106,7 @@ export default function Fields(){
                     className="bg-gray-400 text-2xl text-white p-4 rounded-full hover:bg-green-800"
                     onClick={openModal}
                 >
-                    <Plus size={20} color="white" />
+                    <Plus size={20} color="white"/>
                 </button>
             </div>
 
@@ -127,7 +153,7 @@ export default function Fields(){
                                     id="fieldImage"
                                     name="fieldImage"
                                     type="file"
-                                    className="w-full p-2 border rounded"
+                                    className="custom-input"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -167,7 +193,8 @@ export default function Fields(){
             )}
 
             {/* Field Cards */}
-            <div className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div
+                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {fields.map((field) => (
                     <div
                         key={field.fieldCode}
