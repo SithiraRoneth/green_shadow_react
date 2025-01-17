@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = []
 const EquipmentSlice = createSlice({
     name : 'equips',
-    initialState,
+    initialState : initialState,
     reducers: {
         addEquipment: (state, action) => {
             console.log("Data fetch")
