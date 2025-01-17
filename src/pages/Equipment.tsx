@@ -166,7 +166,7 @@ export default function Equipment() {
                     {equips.map((equip, index) => (
                         <li
                             key={equip.equipId}
-                            className={`grid grid-cols-4 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-200" : "bg-white"}`}
+                            className={`grid grid-cols-4 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${index % 2 === 0 ? "bg-gradient-to-r from-gray-500 via-green-500 to-emerald-400" : "bg-white"}`}
                             onClick={() => openUpdateModal(equip)}
                         >
                             <span>{equip.equipId}</span>
