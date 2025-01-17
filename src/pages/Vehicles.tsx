@@ -183,7 +183,7 @@ export default function Vehicles(){
                         <li
                             key={vehicle.licensePlate}
                             className={`grid grid-cols-5 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${
-                                index % 2 === 0 ? "bg-gray-200" : "bg-white"
+                                index % 2 === 0 ? "bg-gradient-to-r from-yellow-500 via-lime-500 to-green-500" : "bg-white"
                             }`}
                             onClick={() => openUpdateModal(vehicle)}
                         >
