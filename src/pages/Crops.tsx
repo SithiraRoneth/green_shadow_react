@@ -223,10 +223,10 @@ export default function Crops() {
             )}
 
             <div className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {crops.map((crop) => (
+                {crops.map((crop,index) => (
                     <div
                         key={crop.cropCode}
-                        className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                        className={`border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer ${index % 2 === 0 ? "bg-gradient-to-r from-lime-200 via-green-400 to-emerald-600" : "bg-white"}`}
                         onClick={() => openUpdateModal(crop)}
                     >
                         <img
@@ -257,3 +257,4 @@ export default function Crops() {
         </>
     );
 }
+
