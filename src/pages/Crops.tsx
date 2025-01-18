@@ -226,7 +226,7 @@ export default function Crops() {
                 {crops.map((crop,index) => (
                     <div
                         key={crop.cropCode}
-                        className={`border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer ${index % 2 === 0 ? "bg-gradient-to-r from-lime-200 via-green-400 to-emerald-600" : "bg-white"}`}
+                        className={`border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer ${index % 2 === 0 ? "bg-gradient-to-r from-lime-600 to-green-50 " : "bg-white"}`}
                         onClick={() => openUpdateModal(crop)}
                     >
                         <img
