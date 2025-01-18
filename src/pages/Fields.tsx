@@ -195,10 +195,10 @@ export default function Fields() {
             {/* Field Cards */}
             <div
                 className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {fields.map((field) => (
+                {fields.map((field,index) => (
                     <div
                         key={field.fieldCode}
-                        className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                        className={`border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer ${index % 2 === 1 ? "bg-gradient-to-r from-stone-200 to-stone-500 " : "bg-white"}`}
                         onClick={() => openUpdateModal(field)}
                     >
                         <img

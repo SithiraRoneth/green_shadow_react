@@ -79,7 +79,7 @@ export default function Vehicles(){
             <div className="flex items-center justify-between mt-[-3%] mr-12 px-4 sm:px-8 lg:px-16">
                 <div></div>
                 <button
-                    className="group bg-gray-400 w-28 sm:w-32 lg:w-36 text-white py-2 sm:py-3 lg:py-4 rounded-full hover:bg-green-800 "
+                    className="group bg-gray-400 w-28 sm:w-32 lg:w-36 text-white py-2 sm:py-3 lg:py-4 rounded-full hover:bg-gradient-to-r from-green-900 via-lime-900 to-slate-50 "
                     onClick={openModal}
                 >
                     Add new
@@ -183,7 +183,7 @@ export default function Vehicles(){
                         <li
                             key={vehicle.licensePlate}
                             className={`grid grid-cols-5 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${
-                                index % 2 === 0 ? "bg-gradient-to-r from-yellow-500 via-lime-500 to-green-500" : "bg-white"
+                                index % 2 === 0 ? "bg-gradient-to-r from-zinc-200 to-zinc-400 " : "bg-white"
                             }`}
                             onClick={() => openUpdateModal(vehicle)}
                         >

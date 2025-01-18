@@ -77,7 +77,7 @@ export default function Equipment() {
             <div className="flex items-center justify-between mt-[-3%] mr-12 px-4 sm:px-8 lg:px-16">
                 <div></div>
                 <button
-                    className="group bg-gray-400 w-28 sm:w-32 lg:w-36 text-white py-2 sm:py-3 lg:py-4 rounded-full hover:bg-green-800 "
+                    className="group bg-gray-400 w-28 sm:w-32 lg:w-36 text-white py-2 sm:py-3 lg:py-4 rounded-full hover:bg-gradient-to-r from-green-900 via-lime-600 to-slate-50 "
                     onClick={openModal}
                 >
                     Add new
@@ -166,7 +166,7 @@ export default function Equipment() {
                     {equips.map((equip, index) => (
                         <li
                             key={equip.equipId}
-                            className={`grid grid-cols-4 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${index % 2 === 0 ? "bg-gradient-to-r from-gray-500 via-green-500 to-emerald-400" : "bg-white"}`}
+                            className={`grid grid-cols-4 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${index % 2 === 0 ? "bg-gradient-to-r from-slate-500 to-slate-50" : "bg-white"}`}
                             onClick={() => openUpdateModal(equip)}
                         >
                             <span>{equip.equipId}</span>
