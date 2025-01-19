@@ -3,6 +3,7 @@ import {useState} from "react";
 import {CircleX, Plus, Save, Trash} from "lucide-react";
 import {addField, deleteField, updateField} from "../reducers/FieldSlice.ts";
 import '../Styles/Input&labels.css'
+import FieldCard from "../components/FieldCard.tsx";
 
 export default function Fields() {
     const dispatch = useDispatch();
@@ -76,10 +77,10 @@ export default function Fields() {
                     closeModal();
                 };
                 reader.readAsDataURL(formData.fieldImage);
-            }else {
+            } else {
                 if (isUpdateMode) {
                     dispatch(updateField(formData));
-                }else {
+                } else {
                     dispatch(addField(formData));
                 }
                 closeModal();
@@ -93,7 +94,7 @@ export default function Fields() {
         dispatch(deleteField({fieldCode}));
     }
     return (
-        <div>
+        <>
             {/* Page Header */}
             <div className="flex items-center justify-center mt-[1%]">
                 <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl opacity-20 uppercase">Field
@@ -195,35 +196,16 @@ export default function Fields() {
             {/* Field Cards */}
             <div
                 className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {fields.map((field,index) => (
-                    <div
+                {fields.map((field, index) => (
+                    <FieldCard
                         key={field.fieldCode}
-                        className={`border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer ${index % 2 === 1 ? "bg-gradient-to-r from-stone-200 to-stone-500 " : "bg-white"}`}
-                        onClick={() => openUpdateModal(field)}
-                    >
-                        <img
-                            src={field.fieldImage}
-                            className="card-img-top"
-                            alt={field.fieldName}
-                            loading="lazy"
-                        />
-                        <h3 className="text-lg font-bold">{field.fieldName}</h3>
-                        <p className="mt-2"><strong>Field Code:</strong>:{field.fieldCode}</p>
-                        <p className="mt-2"><strong>Field Location:</strong>:{field.fieldLocation}</p>
-                        <br/>
-                        <br/>
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handelDelete(field.fieldCode)
-                            }}
-                            className="p-2 bg-red-700 text-white rounded-full hover:bg-red-800 transition-colors"
-                        >
-                            <Trash/>
-                        </button>
-                    </div>
+                        index={index}
+                        field={field}
+                        onUpdate={openUpdateModal}
+                        onDelete={handelDelete}
+                    />
                 ))}
             </div>
-        </div>
+        </>
     )
 }
