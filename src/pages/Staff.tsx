@@ -1,7 +1,8 @@
 import {CircleX, Plus, Save} from "lucide-react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addStaff, deleteStaff, updateStaff } from "../reducers/StaffSlice.ts";
+import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addStaff, deleteStaff, updateStaff} from "../reducers/StaffSlice.ts";
+import StaffCard from "../components/Staff/StaffCard.tsx";
 
 export default function Staff() {
     const [isModelOpen, setIsModelOpen] = useState(false);
@@ -14,7 +15,7 @@ export default function Staff() {
         staffId: "",
         firstName: "",
         lastName: "",
-        jobName:"",
+        jobName: "",
         email: "",
         phone: "",
     });
@@ -24,14 +25,14 @@ export default function Staff() {
             staffId: "",
             firstName: "",
             lastName: "",
-            jobName:"",
+            jobName: "",
             email: "",
             phone: "",
         });
         setIsModelOpen(true);
         setIsUpdateMode(false);
     };
-    const openUpdateModal = (staff) =>{
+    const openUpdateModal = (staff) => {
         setFormData(staff);
         setSelectedStaffId(staff);
         setIsUpdateMode(true);
@@ -43,7 +44,7 @@ export default function Staff() {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData({
             ...formData,
             [name]: value,
@@ -53,9 +54,9 @@ export default function Staff() {
     const saveStaff = () => {
         if (formData.staffId && formData.firstName && formData.lastName && formData.email && formData.phone) {
             if (isUpdateMode) {
-                dispatch(updateStaff({ ...formData }));
+                dispatch(updateStaff({...formData}));
             } else {
-                dispatch(addStaff({ ...formData }));
+                dispatch(addStaff({...formData}));
             }
             closeUpdateModal();
         } else {
@@ -63,7 +64,7 @@ export default function Staff() {
         }
     };
 
-    const handelDelete = (staffId) =>{
+    const handelDelete = (staffId) => {
         dispatch(deleteStaff({staffId}));
     }
     return (
@@ -192,26 +193,12 @@ export default function Staff() {
             <div
                 className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                 {staffs.map((staff, index) => (
-
-                    <div
+                    <StaffCard
                         key={staff.staffId}
-                        className={`border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow cursor-pointer ${index % 2 === 0 ? "bg-gradient-to-r from-gray-50 to-green-500" : "bg-white"}`}
-                        onClick={() => openUpdateModal(staff)}
-                    >
-
-                        <h2 className="text-2xl font-bold">{staff.firstName} {staff.lastName}</h2>
-                        <br/>
-
-                        <p className="mt-2"><strong>Email :</strong> {staff.email}</p>
-                        <p className="mt-2"><strong>Contact No:</strong> {staff.phone}</p>
-                        <br/>
-
-                        <br/>
-                        <div className='bg-green-900 text-white  rounded-full'>
-                            <p className="mt-2 flex justify-center items-center font-bold uppercase">{staff.jobName}</p>
-                        </div>
-
-                    </div>
+                        index={index}
+                        staff={staff}
+                        onUpdate={openUpdateModal}
+                    />
                 ))}
             </div>
 
