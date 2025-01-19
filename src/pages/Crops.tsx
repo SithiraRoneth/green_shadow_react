@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCrop, deleteCrop, updateCrop } from "../reducers/CropSlice.ts";
 import "../Styles/Input&labels.css";
-import CropCard from "../components/CropCard.tsx";
+import CropCard from "../components/Crop/CropCard.tsx";
 
 export default function Crops() {
     const [isModalOpen, setIsModalOpen] = useState(false);

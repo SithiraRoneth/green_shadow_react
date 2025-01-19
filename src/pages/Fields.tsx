@@ -3,7 +3,7 @@ import {useState} from "react";
 import {CircleX, Plus, Save, Trash} from "lucide-react";
 import {addField, deleteField, updateField} from "../reducers/FieldSlice.ts";
 import '../Styles/Input&labels.css'
-import FieldCard from "../components/FieldCard.tsx";
+import FieldCard from "../components/Field/FieldCard.tsx";
 
 export default function Fields() {
     const dispatch = useDispatch();

@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addEquipment, deleteEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
 import {CircleMinus, CircleX, Save} from "lucide-react";
 import '../Styles/Input&labels.css'
+import EquipmentTable from "../components/Equipment/EquipmentTable.tsx";
 
 export default function Equipment() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -164,26 +165,12 @@ export default function Equipment() {
 
                 <ul className="mt-4 space-y-2">
                     {equips.map((equip, index) => (
-                        <li
-                            key={equip.equipId}
-                            className={`grid grid-cols-4 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${index % 2 === 0 ? "bg-gradient-to-r from-slate-500 to-slate-50" : "bg-white"}`}
-                            onClick={() => openUpdateModal(equip)}
-                        >
-                            <span>{equip.equipId}</span>
-                            <span>{equip.equipName}</span>
-                            <span>{equip.equipType}</span>
-
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDelete(equip.equipId);
-                                }}
-                                className="text-red-500 hover:text-red-700 flex justify-center"
-                                title="Delete Equipment"
-                            >
-                                <CircleMinus className="w-5 h-5"/>
-                            </button>
-                        </li>
+                        <EquipmentTable
+                        key = {equip.equipId}
+                        index={index}
+                        equip={equip}
+                        onUpdate={openUpdateModal}
+                        onDelete={handleDelete}/>
                     ))}
                 </ul>
             </div>
