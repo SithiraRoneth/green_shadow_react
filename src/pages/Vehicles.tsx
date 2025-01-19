@@ -3,30 +3,32 @@ import {Vehicle} from "../model/Vehicle.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {addVehicle, deleteVehicle, updateVehicle} from "../reducers/VehicleSlice.ts";
 import {CircleMinus, CircleX, Save} from "lucide-react";
+import VehicleTable from "../components/Vehicle/VehicleTable.tsx";
 
-export default function Vehicles(){
-    const[isModelOpen, setIsModelOpen] = useState(false);
-    const[isUpdate, setIsUpdate] = useState(false);
-    const[selectedVehicle, setSelectedVehicle] = useState(null);
+export default function Vehicles() {
+    const [isModelOpen, setIsModelOpen] = useState(false);
+    const [isUpdate, setIsUpdate] = useState(false);
+    const [selectedVehicle, setSelectedVehicle] = useState(null);
     const vehicles = useSelector((state) => state.vehicles);
     const dispatch = useDispatch();
 
-    const[formData, setFormData] = useState({
-        licensePlate : "",
-        vehicleCategory : "",
-        fuelType : "",
-        vehicleColor : ""
+    const [formData, setFormData] = useState({
+        licensePlate: "",
+        vehicleCategory: "",
+        fuelType: "",
+        vehicleColor: ""
     });
 
     const openModal = () => {
         setFormData({
-            licensePlate : "",
-            vehicleCategory : "",
-            fuelType : "",
-            vehicleColor : ""
+            licensePlate: "",
+            vehicleCategory: "",
+            fuelType: "",
+            vehicleColor: ""
         });
         setIsUpdate(false);
-        setIsModelOpen(true);;
+        setIsModelOpen(true);
+        ;
     };
 
     const openUpdateModal = (vehicle) => {
@@ -35,7 +37,7 @@ export default function Vehicles(){
         setIsUpdate(true);
         setIsModelOpen(true);
     }
-    const closeModal = () =>{
+    const closeModal = () => {
         setIsModelOpen(false);
         setSelectedVehicle(null);
     }
@@ -48,27 +50,28 @@ export default function Vehicles(){
         });
     }
     const saveVehicle = () => {
-        if (formData.licensePlate && formData.vehicleCategory && formData.fuelType && formData.vehicleColor){
+        if (formData.licensePlate && formData.vehicleCategory && formData.fuelType && formData.vehicleColor) {
             if (isUpdate) {
-                dispatch(updateVehicle({ ...formData }));
-            }else {
-                dispatch(addVehicle({ ...formData }));;
+                dispatch(updateVehicle({...formData}));
+            } else {
+                dispatch(addVehicle({...formData}));
+                ;
             }
             console.log("Data save/updated", formData);
             closeModal();
-        }else {
+        } else {
             alert("Please fill in all fields");
         }
     }
 
-    const handelDelete = () =>{
-        if (formData.licensePlate){
+    const handelDelete = () => {
+        if (formData.licensePlate) {
             dispatch(deleteVehicle({licensePlate: formData.licensePlate}));
-        }else {
+        } else {
             alert("Delete Failed, try again !");
         }
     }
-    return(
+    return (
         <>
             <div className="ml-16 items-center justify-center mt-[3%]">
                 <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-5xl opacity-20 uppercase">
@@ -180,31 +183,13 @@ export default function Vehicles(){
 
                 <ul className="mt-4 space-y-2">
                     {vehicles.map((vehicle, index) => (
-                        <li
+                        <VehicleTable
                             key={vehicle.licensePlate}
-                            className={`grid grid-cols-5 items-center text-center p-2 border rounded-full hover:bg-gray-100 ${
-                                index % 2 === 0 ? "bg-gradient-to-r from-zinc-200 to-zinc-400 " : "bg-white"
-                            }`}
-                            onClick={() => openUpdateModal(vehicle)}
-                        >
-                            <span>{vehicle.licensePlate}</span>
-                            <span>{vehicle.vehicleCategory}</span>
-                            <span>{vehicle.fuelType}</span>
-                            <span>{vehicle.vehicleColor}</span>
-
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handelDelete(vehicle.licensePlate);
-                                    }}
-                                    className="text-red-500 hover:text-red-700"
-                                    title="Delete Vehicle"
-                                >
-                                    <CircleMinus className="w-5 h-5"/>
-                                </button>
-                            </div>
-                        </li>
+                            index={index}
+                            vehicle={vehicle}
+                            onUpdate={openUpdateModal}
+                            onDelete={handelDelete}
+                        />
                     ))}
                 </ul>
             </div>
