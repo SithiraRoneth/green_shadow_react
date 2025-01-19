@@ -1,4 +1,4 @@
-import {CircleX, Plus, Save, Trash} from "lucide-react";
+import {CircleX, Plus, Save} from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addStaff, deleteStaff, updateStaff } from "../reducers/StaffSlice.ts";
