@@ -17,27 +17,19 @@ export const saveEquipment = createAsyncThunk(
         const response = await api.post('/equip/addEquip', data);
         return response.data;
     }
+);
+
+export const deleteEquipment = createAsyncThunk(
+    'equip',
+    async (equipmentCode:string)=>{
+        const response = await api.delete(`/equip/deleteEquip/${equipmentCode}`);
+        return response.data;
+    }
 )
 const EquipmentSlice = createSlice({
     name : 'equips',
     initialState : initialState,
     reducers: {
-        addEquipment: (state, action) => {
-            console.log("Data fetch")
-            state.push(action.payload);
-        },
-        updateEquipment: (state, action) => {
-            const index = state.findIndex(equipment => equipment.equipmentCode === action.payload.equipId);
-            if(index !== -1){
-                state[index] = {
-                    ...state[index],
-                    ...action.payload,
-                };
-            }
-        },
-        deleteEquipment: (state, action) => {
-            return state.filter(equipment => equipment.equipmentCode !== action.payload.equipId);
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -49,10 +41,20 @@ const EquipmentSlice = createSlice({
                 console.log("Failed to save Equipment :", action.payload);
             })
             .addCase(saveEquipment.pending,()=>{
-                console.log("Crop Saved pending");
+                console.log("Equipment Saved pending");
+            })
+        builder
+            .addCase(deleteEquipment.fulfilled,(state,action)=>{
+                state.push(action.payload);
+                console.log("Equipment Deleted");
+            })
+            .addCase(deleteEquipment.rejected,(state,action)=>{
+                console.log("Failed to delete equipment : ", action.payload);
+            })
+            .addCase(deleteEquipment.pending,()=>{
+                console.log("Equipment Deleted Pending");
             })
     }
 })
 
-export const {addEquipment,updateEquipment,deleteEquipment} = EquipmentSlice.actions;
 export default EquipmentSlice.reducer;
