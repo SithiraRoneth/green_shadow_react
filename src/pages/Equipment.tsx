@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addEquipment, deleteEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
+import {addEquipment, deleteEquipment, saveEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
 import {CircleMinus, CircleX, Save} from "lucide-react";
 import '../Styles/Input&labels.css'
 import EquipmentTable from "../components/Equipment/EquipmentTable.tsx";
@@ -13,15 +13,15 @@ export default function Equipment() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        equipId: '',
-        equipName: '',
-        equipType: '',
+        equipmentCode: '',
+        equipmentName: '',
+        equipmentStatus: '',
     })
     const openModal = () => {
         setFormData({
-            equipId: "",
-            equipName: "",
-            equipType: "",
+            equipmentCode: '',
+            equipmentName: '',
+            equipmentStatus: '',
         })
         setIsUpdateModalOpen(false);
         setIsModalOpen(true);
@@ -47,11 +47,11 @@ export default function Equipment() {
     };
 
     const saveEquip = () => {
-        if (formData.equipId && formData.equipName && formData.equipType) {
+        if (formData.equipmentCode && formData.equipmentName && formData.equipmentStatus) {
             if (isUpdateModalOpen) {
-                dispatch(updateEquipment({...formData}));
+                // dispatch(saveEquipment({...formData}));
             } else {
-                dispatch(addEquipment({...formData}));
+                dispatch(saveEquipment({...formData}));
             }
             console.log("Data save/updated", formData);
             closeUpdateModal()
@@ -61,8 +61,8 @@ export default function Equipment() {
     }
 
     const handleDelete = () => {
-        if (formData.equipId) {
-            dispatch(deleteEquipment({equipId: formData.equipId}));
+        if (formData.equipmentCode) {
+            dispatch(deleteEquipment({equipmentCode: formData.equipmentCode}));
         } else {
             alert("Delete Failed, try again !");
         }
@@ -96,41 +96,41 @@ export default function Equipment() {
                         {/* Modal content */}
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="equipId" className="custom-label">Equipment Code</label>
+                                <label htmlFor="equipmentCode" className="custom-label">Equipment Code</label>
                                 <input
-                                    id="equipId"
-                                    name="equipId"
+                                    id="equipmentCode"
+                                    name="equipmentCode"
                                     type="text"
                                     className="custom-input"
                                     placeholder="Enter Crop Code"
-                                    value={formData.equipId}
+                                    value={formData.equipmentCode}
                                     onChange={handleChange}
                                     disabled={isUpdateModalOpen}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="equipName" className="custom-label">Equipment Name</label>
+                                <label htmlFor="equipmentName" className="custom-label">Equipment Name</label>
                                 <input
-                                    id="equipName"
-                                    name="equipName"
+                                    id="equipmentName"
+                                    name="equipmentName"
                                     type="text"
                                     className="custom-input"
                                     placeholder="Enter Crop Name"
-                                    value={formData.equipName}
+                                    value={formData.equipmentName}
                                     onChange={handleChange}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="equipType" className="custom-label">Equipment Type</label>
+                                <label htmlFor="equipmentStatus" className="custom-label">Equipment Type</label>
                                 <input
-                                    id="equipType"
-                                    name="equipType"
+                                    id="equipmentStatus"
+                                    name="equipmentStatus"
                                     type="text"
                                     className="custom-input"
                                     placeholder="Enter Equipment Type"
-                                    value={formData.equipType}
+                                    value={formData.equipmentStatus}
                                     onChange={handleChange}
                                 />
                             </div>
