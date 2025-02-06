@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addEquipment, deleteEquipment, saveEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
-import {CircleMinus, CircleX, Save} from "lucide-react";
+import {deleteEquipment, saveEquipment} from "../reducers/EquipmentSlice.ts";
+import {CircleX, Save} from "lucide-react";
 import '../Styles/Input&labels.css'
 import EquipmentTable from "../components/Equipment/EquipmentTable.tsx";
 
