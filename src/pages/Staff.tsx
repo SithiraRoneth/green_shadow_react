@@ -12,22 +12,24 @@ export default function Staff() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        staffId: "",
+        email: "",
         firstName: "",
         lastName: "",
-        jobName: "",
-        email: "",
-        phone: "",
+        gender: "",
+        address: "",
+        contactNo: "",
+        jobRole:""
     });
 
     const openModal = () => {
         setFormData({
-            staffId: "",
+            email: "",
             firstName: "",
             lastName: "",
-            jobName: "",
-            email: "",
-            phone: "",
+            gender: "",
+            address: "",
+            contactNo: "",
+            jobRole:""
         });
         setIsModelOpen(true);
         setIsUpdateMode(false);
@@ -52,7 +54,7 @@ export default function Staff() {
     };
 
     const saveStaff = () => {
-        if (formData.staffId && formData.firstName && formData.lastName && formData.email && formData.phone) {
+        if (formData.email && formData.firstName && formData.lastName && formData.gender && formData.address && formData.contactNo && formData.jobRole) {
             if (isUpdateMode) {
                 dispatch(updateStaff({...formData}));
             } else {
@@ -64,8 +66,8 @@ export default function Staff() {
         }
     };
 
-    const handelDelete = (staffId) => {
-        dispatch(deleteStaff({staffId}));
+    const handelDelete = (email) => {
+        dispatch(deleteStaff({email}));
     }
     return (
         <>
@@ -94,14 +96,14 @@ export default function Staff() {
                         {/* Modal Content */}
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="staffId" className="custom-label">Staff Id</label>
+                                <label htmlFor="email" className="custom-label">Email</label>
                                 <input
-                                    id="staffId"
-                                    name="staffId"
+                                    id="email"
+                                    name="email"
                                     type="text"
                                     className="custom-input"
-                                    placeholder="Enter Staff Id"
-                                    value={formData.staffId}
+                                    placeholder="Enter Email"
+                                    value={formData.email}
                                     onChange={handleChange}
                                     disabled={isUpdateMode}
                                 />
@@ -131,41 +133,55 @@ export default function Staff() {
                                     onChange={handleChange}
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="gender" className="custom-label">Gender</label>
+                                <select
+                                    id="gender"
+                                    name="gender"
+                                    className="custom-input"
+                                    value={formData.gender}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
 
                             <div>
-                                <label htmlFor="jobName" className="custom-label">Job Name</label>
+                                <label htmlFor="address" className="custom-label">Address</label>
                                 <input
-                                    id="jobName"
-                                    name="jobName"
+                                    id="address"
+                                    name="address"
                                     type="text"
                                     className="custom-input"
-                                    placeholder="Enter Job Name"
-                                    value={formData.jobName}
+                                    placeholder="Enter Address"
+                                    value={formData.address}
                                     onChange={handleChange}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="custom-label">Email</label>
+                                <label htmlFor="contactNo" className="custom-label">Contact No</label>
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="text"
+                                    id="contactNo"
+                                    name="contactNo"
+                                    type="contactNo"
                                     className="custom-input"
                                     placeholder="Enter Email"
-                                    value={formData.email}
+                                    value={formData.contactNo}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div>
-                                <label htmlFor="phone" className="custom-label">Contact No</label>
+                                <label htmlFor="jobRole" className="custom-label">Job Role</label>
                                 <input
-                                    id="phone"
-                                    name="phone"
-                                    type="number"
+                                    id="jobRole"
+                                    name="jobRole"
+                                    type="jobRole"
                                     className="custom-input"
-                                    placeholder="Enter Contact No"
-                                    value={formData.phone}
+                                    placeholder="Enter Job Role"
+                                    value={formData.jobRole}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -194,7 +210,7 @@ export default function Staff() {
                 className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                 {staffs.map((staff, index) => (
                     <StaffCard
-                        key={staff.staffId}
+                        key={staff.email}
                         index={index}
                         staff={staff}
                         onUpdate={openUpdateModal}
