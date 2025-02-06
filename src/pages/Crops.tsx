@@ -1,7 +1,7 @@
-import { CircleX, Plus, Save, Trash } from "lucide-react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addCrop, deleteCrop, updateCrop } from "../reducers/CropSlice.ts";
+import {CircleX, Plus, Save} from "lucide-react";
+import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {saveCrop, updateCrop} from "../reducers/CropSlice.ts";
 import "../Styles/Input&labels.css";
 import CropCard from "../components/Crop/CropCard.tsx";
 
@@ -15,7 +15,7 @@ export default function Crops() {
     const [formData, setFormData] = useState({
         cropCode: "",
         cropName: "",
-        cropImageFile: null,
+        image: null,
         scientificName: "",
         category: "",
         season: "",
@@ -25,7 +25,7 @@ export default function Crops() {
         setFormData({
             cropCode: "",
             cropName: "",
-            cropImageFile: null,
+            image: null,
             scientificName: "",
             category: "",
             season: "",
@@ -38,7 +38,7 @@ export default function Crops() {
         setFormData({
             cropCode: crop.cropCode,
             cropName: crop.cropName,
-            cropImageFile: null,
+            image: null,
             scientificName: crop.scientificName,
             category: crop.category,
             season: crop.season,
@@ -54,11 +54,11 @@ export default function Crops() {
     };
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const {name, value, files} = e.target;
         if (name === "cropImage" && files.length > 0) {
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                cropImageFile: files[0],
+                image: files[0],
             }));
         } else {
             setFormData({
@@ -67,47 +67,43 @@ export default function Crops() {
             });
         }
     };
-
     const saveData = () => {
         if (formData.cropCode && formData.cropName && formData.scientificName && formData.category && formData.season) {
-            // Prepare image data
-            const reader = new FileReader();
-            if (formData.cropImageFile) {
-                reader.onloadend = () => {
-                    const cropData = {
-                        ...formData,
-                        cropImage: reader.result,
-                    };
+            const cropData = new FormData();
 
-                    if (isUpdateMode) {
-                        dispatch(updateCrop(cropData));
-                    } else {
-                        dispatch(addCrop(cropData));
-                    }
-                    closeModal();
-                };
-                reader.readAsDataURL(formData.cropImageFile);
-            } else {
-                if (isUpdateMode) {
-                    dispatch(updateCrop(formData));
-                } else {
-                    dispatch(addCrop(formData));
-                }
-                closeModal();
+            cropData.append("cropCode", formData.cropCode);
+            cropData.append("cropName", formData.cropName);
+            cropData.append("scientificName", formData.scientificName);
+            cropData.append("category", formData.category);
+            cropData.append("season", formData.season);
+
+
+            if (formData.image) {
+                cropData.append("image", formData.image);
             }
+
+
+            if (isUpdateMode) {
+                dispatch(updateCrop(cropData));
+            } else {
+                dispatch(saveCrop(cropData));
+            }
+            closeModal();
         } else {
             alert("Please fill in all fields");
         }
     };
 
+
     const handleDelete = (cropCode) => {
-        dispatch(deleteCrop({ cropCode }));
+        // dispatch(deleteCrop({ cropCode }));
     };
 
     return (
         <>
             <div className="flex items-center justify-center mt-[1%]">
-                <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl opacity-20 uppercase">Crop Management</h1>
+                <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl opacity-20 uppercase">Crop
+                    Management</h1>
             </div>
 
             <div className="flex items-center justify-center mt-[2%]">
@@ -115,7 +111,7 @@ export default function Crops() {
                     className="bg-gray-400 text-2xl text-white p-4 rounded-full hover:bg-green-800"
                     onClick={openModal}
                 >
-                    <Plus size={20} color="white" />
+                    <Plus size={20} color="white"/>
                 </button>
             </div>
 
@@ -155,10 +151,10 @@ export default function Crops() {
                             </div>
 
                             <div>
-                                <label htmlFor="cropImage" className="custom-label">Crop Image</label>
+                                <label htmlFor="image" className="custom-label">Crop Image</label>
                                 <input
-                                    id="cropImage"
-                                    name="cropImage"
+                                    id="image"
+                                    name="image"
                                     type="file"
                                     className="custom-input"
                                     onChange={handleChange}
@@ -210,25 +206,26 @@ export default function Crops() {
                                 className="text-black px-4 py-2 rounded"
                                 onClick={closeModal}
                             >
-                                <CircleX />
+                                <CircleX/>
                             </button>
                             <button
                                 className="bg-green-500 text-white px-4 py-2 rounded"
                                 onClick={saveData}
                             >
-                                <Save />
+                                <Save/>
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            <div className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {crops.map((crop,index) => (
+            <div
+                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {crops.map((crop, index) => (
                     <CropCard
-                        key = {crop.cropCode}
-                        index = {index}
-                        crop = {crop}
+                        key={crop.cropCode}
+                        index={index}
+                        crop={crop}
                         onUpdate={openUpdateModal}
                         onDelete={handleDelete}/>
                 ))}
