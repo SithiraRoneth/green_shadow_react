@@ -1,14 +1,14 @@
 import {CircleX, Plus, Save} from "lucide-react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addStaff, deleteStaff, updateStaff} from "../reducers/StaffSlice.ts";
+import {deleteStaff, getAllStaffs, saveStaffs, updateStaff} from "../reducers/StaffSlice.ts";
 import StaffCard from "../components/Staff/StaffCard.tsx";
 
 export default function Staff() {
     const [isModelOpen, setIsModelOpen] = useState(false);
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const [selectedStaffId, setSelectedStaffId] = useState(null);
-    const staffs = useSelector((state) => state.staffs);
+    const staffs = useSelector((state) => state.staffs || []);
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
@@ -18,8 +18,11 @@ export default function Staff() {
         gender: "",
         address: "",
         contactNo: "",
-        jobRole:""
+        jobrole:""
     });
+    useEffect(() => {
+        dispatch(getAllStaffs())
+    }, [dispatch]);
 
     const openModal = () => {
         setFormData({
@@ -29,7 +32,7 @@ export default function Staff() {
             gender: "",
             address: "",
             contactNo: "",
-            jobRole:""
+            jobrole:""
         });
         setIsModelOpen(true);
         setIsUpdateMode(false);
@@ -54,12 +57,13 @@ export default function Staff() {
     };
 
     const saveStaff = () => {
-        if (formData.email && formData.firstName && formData.lastName && formData.gender && formData.address && formData.contactNo && formData.jobRole) {
+        if (formData.email && formData.firstName && formData.lastName && formData.gender && formData.address && formData.contactNo && formData.jobrole) {
             if (isUpdateMode) {
                 dispatch(updateStaff({...formData}));
             } else {
-                dispatch(addStaff({...formData}));
+                dispatch(saveStaffs({...formData}));
             }
+            dispatch(getAllStaffs())
             closeUpdateModal();
         } else {
             alert("Please fill in all fields");
@@ -143,8 +147,8 @@ export default function Staff() {
                                     onChange={handleChange}
                                 >
                                     <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
 
@@ -174,14 +178,14 @@ export default function Staff() {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="jobRole" className="custom-label">Job Role</label>
+                                <label htmlFor="jobrole" className="custom-label">Job Role</label>
                                 <input
-                                    id="jobRole"
-                                    name="jobRole"
-                                    type="jobRole"
+                                    id="jobrole"
+                                    name="jobrole"
+                                    type="jobrole"
                                     className="custom-input"
                                     placeholder="Enter Job Role"
-                                    value={formData.jobRole}
+                                    value={formData.jobrole}
                                     onChange={handleChange}
                                 />
                             </div>
