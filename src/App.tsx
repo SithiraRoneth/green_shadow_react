@@ -10,9 +10,13 @@ import Vehicles from "./pages/Vehicles.tsx";
 import Profile from "./pages/Profile.tsx";
 import Equipment from "./pages/Equipment.tsx";
 import Home from "./pages/Home.tsx";
+import Login from "./pages/Login.tsx";
 
 function App() {
     const routes = createBrowserRouter([
+        {
+          path:'/login', element:<Login/>
+        },
         {
             path: '', element: <RootLayout/>,
             children: [
