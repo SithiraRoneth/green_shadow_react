@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Vehicle} from "../model/Vehicle.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {addVehicle, deleteVehicle, updateVehicle} from "../reducers/VehicleSlice.ts";
+import {addVehicle, deleteVehicle, saveVehicles, updateVehicle} from "../reducers/VehicleSlice.ts";
 import {CircleMinus, CircleX, Save} from "lucide-react";
 import VehicleTable from "../components/Vehicle/VehicleTable.tsx";
 
@@ -28,7 +28,6 @@ export default function Vehicles() {
         });
         setIsUpdate(false);
         setIsModelOpen(true);
-        ;
     };
 
     const openUpdateModal = (vehicle) => {
@@ -52,10 +51,9 @@ export default function Vehicles() {
     const saveVehicle = () => {
         if (formData.licensePlate && formData.vehicleCategory && formData.fuelType && formData.vehicleColor) {
             if (isUpdate) {
-                dispatch(updateVehicle({...formData}));
+                // dispatch(updateVehicle({...formData}));
             } else {
-                dispatch(addVehicle({...formData}));
-                ;
+                dispatch(saveVehicles({...formData}));
             }
             console.log("Data save/updated", formData);
             closeModal();
@@ -66,7 +64,7 @@ export default function Vehicles() {
 
     const handelDelete = () => {
         if (formData.licensePlate) {
-            dispatch(deleteVehicle({licensePlate: formData.licensePlate}));
+            // dispatch(deleteVehicle({licensePlate: formData.licensePlate}));
         } else {
             alert("Delete Failed, try again !");
         }
@@ -74,7 +72,7 @@ export default function Vehicles() {
     return (
         <>
             <div className="ml-16 items-center justify-center mt-[3%]">
-                <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-5xl opacity-20 uppercase">
+                <h1 className="font-extrabold text-4xl sm:text-5xl md:text-4xl  lg:text-5xl opacity-20 uppercase">
                     Vehicle Management
                 </h1>
             </div>
@@ -82,7 +80,7 @@ export default function Vehicles() {
             <div className="flex items-center justify-between mt-[-3%] mr-12 px-4 sm:px-8 lg:px-16">
                 <div></div>
                 <button
-                    className="group bg-gray-400 w-28 sm:w-32 lg:w-36 text-white py-2 sm:py-3 lg:py-4 rounded-full hover:bg-gradient-to-r from-green-900 via-lime-900 to-slate-50 "
+                    className="group bg-gray-400 w-28 sm:w-32 lg:w-36 text-white py-2 sm:py-3 lg:py-4 rounded-full hover:bg-gradient-to-r from-green-900 via-lime-900 to-slate-50"
                     onClick={openModal}
                 >
                     Add new
