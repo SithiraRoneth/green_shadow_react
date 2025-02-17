@@ -7,14 +7,14 @@ export default function FieldCard({field,onUpdate,onDelete,index}) {
             onClick={() => onUpdate(field)}
         >
             <img
-                src={field.fieldImage}
+                src={field.image}
                 className="card-img-top"
                 alt={field.fieldName}
                 loading="lazy"
             />
-            <h3 className="text-lg font-bold">{field.fieldName}</h3>
-            <p className="mt-2"><strong>Field Code:</strong>:{field.fieldCode}</p>
-            <p className="mt-2"><strong>Field Location:</strong>:{field.fieldLocation}</p>
+            <h3 className="text-lg font-bold"> {field.fieldName}</h3>
+            <p className="mt-2"><strong>Field Code:</strong> {field.fieldCode}</p>
+            <p className="mt-2"><strong>Field Location:</strong> {field.fieldLocation}</p>
             <br/>
             <br/>
             <button

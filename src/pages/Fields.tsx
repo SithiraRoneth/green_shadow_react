@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {CircleX, Plus, Save, Trash} from "lucide-react";
-import {addField, deleteField, updateField} from "../reducers/FieldSlice.ts";
+import {addField, deleteField, deleteFiled, getAllField, saveFiled, updateField} from "../reducers/FieldSlice.ts";
 import '../Styles/Input&labels.css'
 import FieldCard from "../components/Field/FieldCard.tsx";
 
@@ -14,15 +14,19 @@ export default function Fields() {
     const [formData, setFormData] = useState({
         fieldCode: '',
         fieldName: '',
-        fieldImage: null,
+        image: null,
         fieldLocation: ''
     })
+
+    useEffect(() => {
+        dispatch(getAllField());
+    }, [dispatch]);
 
     const openModal = () => {
         setFormData({
             fieldCode: '',
             fieldName: '',
-            fieldImage: null,
+            image: null,
             fieldLocation: ''
         });
 
@@ -33,7 +37,7 @@ export default function Fields() {
         setFormData({
             fieldCode: field.fieldCode,
             fieldName: field.fieldName,
-            fieldImage: null,
+            image: null,
             fieldLocation: field.fieldLocation,
         });
         setSelectedField(field);
@@ -46,10 +50,10 @@ export default function Fields() {
     }
     const handleChange = (e) => {
         const {name, value, files} = e.target;
-        if (name === 'fieldImage' && files.length > 0) {
+        if (name === 'image') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                fieldImage: files[0],
+                image: files[0],
             }));
         } else {
             setFormData({
@@ -61,37 +65,28 @@ export default function Fields() {
 
     const saveField = () => {
         if (formData.fieldCode && formData.fieldName && formData.fieldLocation) {
+            const fieldData = new FormData();
 
-            const reader = new FileReader();
-            if (formData.fieldImage) {
-                reader.onloadend = () => {
-                    const fieldData = {
-                        ...formData,
-                        fieldImage: reader.result,
-                    };
-                    if (isUpdateMode) {
-                        dispatch(updateField(fieldData));
-                    } else {
-                        dispatch(addField(fieldData));
-                    }
-                    closeModal();
-                };
-                reader.readAsDataURL(formData.fieldImage);
-            } else {
-                if (isUpdateMode) {
-                    dispatch(updateField(formData));
-                } else {
-                    dispatch(addField(formData));
-                }
-                closeModal();
+            fieldData.append("fieldCode", formData.fieldCode);
+            fieldData.append("fieldName", formData.fieldName);
+            fieldData.append("fieldLocation", formData.fieldLocation);
+
+            if (formData.image){
+                fieldData.append("image", formData.image);
             }
-        } else {
-            alert("Please fill in all fields");
+            if (isUpdateMode) {
+                dispatch(updateField(fieldData))
+            }else {
+                dispatch(saveFiled(fieldData));
+            }
+            closeModal();
+        }else {
+            alert("Please fill in all fields")
         }
     };
 
     const handelDelete = (fieldCode) => {
-        dispatch(deleteField({fieldCode}));
+        dispatch(deleteFiled({fieldCode}));
     }
     return (
         <>
@@ -149,10 +144,10 @@ export default function Fields() {
                             </div>
 
                             <div>
-                                <label htmlFor="cropImage" className="custom-label">Field Image</label>
+                                <label htmlFor="image" className="custom-label">Field Image</label>
                                 <input
-                                    id="fieldImage"
-                                    name="fieldImage"
+                                    id="image"
+                                    name="image"
                                     type="file"
                                     className="custom-input"
                                     onChange={handleChange}
