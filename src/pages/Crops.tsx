@@ -1,7 +1,7 @@
 import {CircleX, Plus, Save} from "lucide-react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {saveCrop, updateCrop} from "../reducers/CropSlice.ts";
+import {deleteCrop, saveCrop, updateCrop,getAllCrops} from "../reducers/CropSlice.ts";
 import "../Styles/Input&labels.css";
 import CropCard from "../components/Crop/CropCard.tsx";
 
@@ -9,7 +9,7 @@ export default function Crops() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const [selectedCrop, setSelectedCrop] = useState(null);
-    const crops = useSelector((state) => state.crops);
+    const crops = useSelector((state) => state.crops || []);
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
@@ -20,6 +20,10 @@ export default function Crops() {
         category: "",
         season: "",
     });
+
+    useEffect(() => {
+        dispatch(getAllCrops());
+    },[dispatch]);
 
     const openModal = () => {
         setFormData({
@@ -55,7 +59,7 @@ export default function Crops() {
 
     const handleChange = (e) => {
         const {name, value, files} = e.target;
-        if (name === "cropImage" && files.length > 0) {
+        if (name === "image") {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 image: files[0],
@@ -82,7 +86,6 @@ export default function Crops() {
                 cropData.append("image", formData.image);
             }
 
-
             if (isUpdateMode) {
                 dispatch(updateCrop(cropData));
             } else {
@@ -96,7 +99,7 @@ export default function Crops() {
 
 
     const handleDelete = (cropCode) => {
-        // dispatch(deleteCrop({ cropCode }));
+        dispatch(deleteCrop({cropCode}));
     };
 
     return (
@@ -156,6 +159,7 @@ export default function Crops() {
                                     id="image"
                                     name="image"
                                     type="file"
+                                    accept="image/*"
                                     className="custom-input"
                                     onChange={handleChange}
                                 />

@@ -7,7 +7,7 @@ export default function CropCard({crop,index,onUpdate,onDelete}){
             onClick={() => onUpdate(crop)}
         >
             <img
-                src={crop.cropImage}
+                src={crop.image}
                 className="card-img-top"
                 alt={crop.cropName}
                 loading="lazy"
