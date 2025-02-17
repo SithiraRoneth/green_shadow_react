@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {Equipment} from "../model/Equipment.ts";
 import axios from "axios";
+import {updateStaff} from "./StaffSlice.ts";
 
 const initialState:Equipment[] = []
 
@@ -9,7 +10,7 @@ const api = axios.create({
 })
 
 export const saveEquipment = createAsyncThunk(
-    'equip',
+    'equip/saveEquip',
     async (equip:Equipment)=>{
         const data = {
             ...equip
@@ -19,10 +20,25 @@ export const saveEquipment = createAsyncThunk(
     }
 );
 
+export const updateEquipment = createAsyncThunk(
+    'equip/updateEquips',
+    async (equip:Equipment)=>{
+        const response = await api.put(`/equip/updateEquip/${equip.equipmentCode}`,equip);
+        return response.data;
+    }
+)
 export const deleteEquipment = createAsyncThunk(
-    'equip',
+    'equip/deleteEquip',
     async (equipmentCode:string)=>{
-        const response = await api.delete(`/equip/deleteEquip/${equipmentCode}`);
+        await api.delete(`/equip/deleteEquip/${equipmentCode}`);
+        return equipmentCode;
+    }
+)
+
+export const getAllEquipments = createAsyncThunk(
+    'equip/getAllEquipments',
+    async ()=>{
+        const response = await api.get('/equip/getEquips');
         return response.data;
     }
 )
@@ -43,17 +59,37 @@ const EquipmentSlice = createSlice({
             .addCase(saveEquipment.pending,()=>{
                 console.log("Equipment Saved pending");
             })
+
+        builder
+            .addCase(getAllEquipments.fulfilled,(state, action) => {
+                return action.payload;
+            })
+            .addCase(getAllEquipments.rejected, (state, action) => {
+                console.log("Failed to fetch Equipment :", action.payload);
+            })
+            .addCase(getAllEquipments.pending,()=>{
+                console.log("Equipment Fetching pending");
+            })
+
         builder
             .addCase(deleteEquipment.fulfilled,(state,action)=>{
-                state.push(action.payload);
-                console.log("Equipment Deleted");
+                return state.filter(equip => equip.equipmentCode !== action.payload);
             })
             .addCase(deleteEquipment.rejected,(state,action)=>{
                 console.log("Failed to delete equipment : ", action.payload);
             })
-            .addCase(deleteEquipment.pending,()=>{
-                console.log("Equipment Deleted Pending");
+
+        builder
+            .addCase(updateEquipment.fulfilled, (state, action) => {
+                const index = state.findIndex(equip => equip.equipmentCode === action.payload.equipmentCode);
+                if (index !== -1) {
+                    state[index] = action.payload;
+                }
+                console.log("Equipment Updated");
             })
+            .addCase(updateEquipment.rejected, (state, action) => {
+                console.log("Failed to update equipment: ", action.error);
+            });
     }
 })
 

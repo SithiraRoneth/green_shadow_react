@@ -1,27 +1,32 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteEquipment, saveEquipment} from "../reducers/EquipmentSlice.ts";
 import {CircleX, Save} from "lucide-react";
 import '../Styles/Input&labels.css'
 import EquipmentTable from "../components/Equipment/EquipmentTable.tsx";
+import {deleteEquipment, getAllEquipments, saveEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
 
 export default function Equipment() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedEquip, setSelectedEquip] = useState(null);
-    const equips = useSelector((state) => state.equips);
+    const equips = useSelector((state) => state.equips || []);
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
         equipmentCode: '',
         equipmentName: '',
-        equipmentStatus: '',
+        equipmentType: '',
     })
+
+    useEffect(() => {
+        dispatch(getAllEquipments());
+    },[dispatch])
+
     const openModal = () => {
         setFormData({
             equipmentCode: '',
             equipmentName: '',
-            equipmentStatus: '',
+            equipmentType: '',
         })
         setIsUpdateModalOpen(false);
         setIsModalOpen(true);
@@ -47,9 +52,9 @@ export default function Equipment() {
     };
 
     const saveEquip = () => {
-        if (formData.equipmentCode && formData.equipmentName && formData.equipmentStatus) {
+        if (formData.equipmentCode && formData.equipmentName && formData.equipmentType) {
             if (isUpdateModalOpen) {
-                // dispatch(saveEquipment({...formData}));
+                dispatch(updateEquipment({...formData}));
             } else {
                 dispatch(saveEquipment({...formData}));
             }
@@ -60,13 +65,19 @@ export default function Equipment() {
         }
     }
 
-    const handleDelete = () => {
-        if (formData.equipmentCode) {
-            dispatch(deleteEquipment({equipmentCode: formData.equipmentCode}));
-        } else {
-            alert("Delete Failed, try again !");
+    const handleDelete = (equipmentCode) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this equipment?");
+
+        if (isConfirmed) {
+            console.log("Deleting Equipment Code:", equipmentCode); // Debugging
+            if (equipmentCode) {
+                dispatch(deleteEquipment(equipmentCode));
+            } else {
+                alert("Delete Failed, try again!");
+            }
         }
-    }
+    };
+
     return (
         <>
             <div className="ml-16 items-center justify-center mt-[3%]">
@@ -123,14 +134,14 @@ export default function Equipment() {
                             </div>
 
                             <div>
-                                <label htmlFor="equipmentStatus" className="custom-label">Equipment Type</label>
+                                <label htmlFor="equipmentType" className="custom-label">Equipment Type</label>
                                 <input
-                                    id="equipmentStatus"
-                                    name="equipmentStatus"
+                                    id="equipmentType"
+                                    name="equipmentType"
                                     type="text"
                                     className="custom-input"
                                     placeholder="Enter Equipment Type"
-                                    value={formData.equipmentStatus}
+                                    value={formData.equipmentType}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -166,11 +177,11 @@ export default function Equipment() {
                 <ul className="mt-4 space-y-2">
                     {equips.map((equip, index) => (
                         <EquipmentTable
-                        key = {equip.equipId}
+                        key = {equip.equipmentCode}
                         index={index}
                         equip={equip}
                         onUpdate={openUpdateModal}
-                        onDelete={handleDelete}/>
+                        onDelete={() => handleDelete(equip.equipmentCode)}/>
                     ))}
                 </ul>
             </div>
