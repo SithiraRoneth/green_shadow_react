@@ -21,7 +21,12 @@ export default function Register(){
 
     const saveUser = () =>{
         if (formData.userEmail && formData.password && formData.role && formData.confirmPassword){
-            dispatch(saveAuth({...formData}));
+            if (formData.password !== formData.confirmPassword){
+                alert("Password doesn't match")
+            }else {
+                dispatch(saveAuth({...formData}));
+            }
+
         }else {
             alert("Please Fill all Fields");
         }

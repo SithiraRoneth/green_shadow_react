@@ -1,27 +1,40 @@
-import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {Link} from "react-router";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom"; // Fixed import
 import { useNavigate } from "react-router-dom";
+import { loginAuth } from "../reducers/AuthSlice.ts";
 
 export default function Login() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         userEmail: "",
         password: "",
-        role:""
-    })
-    const navigate = useNavigate(); // Initialize useNavigate
+    });
 
-    const handleSubmit = (e) => {
-        const {name,value} = e.target;
+    // Handle input changes
+    const handleChange = (e) => {
+        const { name, value } = e.target; // Get the input name and value
         setFormData({
             ...formData,
             [name]: value,
-        })
-    }
-    const loginUser = ()=>{
-        navigate("/dash/home");
-    }
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const result = await dispatch(loginAuth(formData)).unwrap();
+            console.log("Login successful:", result);
+            localStorage.setItem("token", result.accessToken);
+            window.location.reload();
+            navigate("/dash/home");
+        } catch (error) {
+            alert("You entered Credentials are not valid");
+        }
+    };
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
@@ -46,7 +59,6 @@ export default function Login() {
                                 Create Account
                             </span>
                         </Link>
-
                     </div>
                     <h2 className="text-2xl font-bold text-gray-800 mb-6">Login</h2>
                     <p className="text-sm text-gray-600 mb-4">Access your account</p>
@@ -55,29 +67,30 @@ export default function Login() {
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Email address</label>
                             <input
-                                type="userEmail"
+                                type="email"
+                                name="userEmail"
                                 className="w-full px-4 py-3 mt-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-200"
                                 placeholder="you@example.com"
-                                // required
-                                // value={formData.userEmail}
-                                // onChange={handleSubmit}
+                                required
+                                value={formData.userEmail}
+                                onChange={handleChange} // Bind to handleChange
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Password</label>
                             <input
                                 type="password"
+                                name="password"
                                 className="w-full px-4 py-3 mt-1 text-gray-900 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-200"
                                 placeholder="Your password"
-                                // required
-                                // value={formData.password}
-                                // onChange={handleSubmit}
+                                required
+                                value={formData.password}
+                                onChange={handleChange} // Bind to handleChange
                             />
                         </div>
                         <button
                             type="submit"
                             className="w-full py-3 mt-6 font-semibold text-white bg-teal-600 rounded-md hover:bg-teal-700 transition duration-300"
-                            onClick={loginUser}
                         >
                             Log In
                         </button>
@@ -87,4 +100,3 @@ export default function Login() {
         </div>
     );
 }
-
