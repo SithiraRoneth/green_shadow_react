@@ -4,13 +4,14 @@ import {CircleX, Plus, Save, Trash} from "lucide-react";
 import {addField, deleteField, deleteFiled, getAllField, saveFiled, updateField} from "../reducers/FieldSlice.ts";
 import '../Styles/Input&labels.css'
 import FieldCard from "../components/Field/FieldCard.tsx";
+import {deleteCrop} from "../reducers/CropSlice.ts";
 
 export default function Fields() {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedField, setSelectedField] = useState(null);
     const [isUpdateMode, setIsUpdateMode] = useState(false);
-    const fields = useSelector((state) => state.fields);
+    const fields = useSelector((state) => state.fields || []);
     const [formData, setFormData] = useState({
         fieldCode: '',
         fieldName: '',
@@ -50,7 +51,7 @@ export default function Fields() {
     }
     const handleChange = (e) => {
         const {name, value, files} = e.target;
-        if (name === 'image') {
+        if (name === "image") {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 image: files[0],
@@ -74,6 +75,8 @@ export default function Fields() {
             if (formData.image){
                 fieldData.append("image", formData.image);
             }
+            console.log("Sending fieldData:", Object.fromEntries(fieldData.entries()));
+
             if (isUpdateMode) {
                 dispatch(updateField(fieldData))
             }else {
@@ -86,7 +89,12 @@ export default function Fields() {
     };
 
     const handelDelete = (fieldCode) => {
-        dispatch(deleteFiled({fieldCode}));
+        const isConfirmed = window.confirm("Are you sure you want to delete Field ?");
+        if (isConfirmed){
+            dispatch(deleteFiled(fieldCode));
+        }else{
+            alert("Delete Failed, try again!");
+        }
     }
     return (
         <>
@@ -149,6 +157,7 @@ export default function Fields() {
                                     id="image"
                                     name="image"
                                     type="file"
+                                    accept="image/*"
                                     className="custom-input"
                                     onChange={handleChange}
                                 />
@@ -190,7 +199,7 @@ export default function Fields() {
 
             {/* Field Cards */}
             <div
-                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4  h-[400px] overflow-y-auto">
                 {fields.map((field, index) => (
                     <FieldCard
                         key={field.fieldCode}

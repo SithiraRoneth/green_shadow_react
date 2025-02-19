@@ -11,22 +11,26 @@ import Profile from "./pages/Profile.tsx";
 import Equipment from "./pages/Equipment.tsx";
 import Home from "./pages/Home.tsx";
 import Login from "./pages/Login.tsx";
+import Register from "./pages/Register.tsx";
 
 function App() {
     const routes = createBrowserRouter([
         {
-          path:'/login', element:<Login/>
+            path: '/', element: <Login/>,
         },
         {
-            path: '', element: <RootLayout/>,
+          path:'/register', element:<Register/>
+        },
+        {
+            path: '/dash', element: <RootLayout/>,
             children: [
-                {path:'/home', element:<Home/>},
-                {path:'/crops', element:<Crops/>},
-                {path: '/fields', element: <Fields/>},
-                {path: '/staffs', element: <Staff/>},
-                {path: '/vehicles', element: <Vehicles/>},
-                {path: '/profiles', element: <Profile/>},
-                {path:'/equips', element: <Equipment/>}
+                {path: 'home', element: <Home/>},
+                {path: 'crops', element: <Crops/>},
+                {path: 'fields', element: <Fields/>},
+                {path: 'staffs', element: <Staff/>},
+                {path: 'vehicles', element: <Vehicles/>},
+                {path: 'profiles', element: <Profile/>},
+                {path: 'equips', element: <Equipment/>}
             ]
         }
     ])

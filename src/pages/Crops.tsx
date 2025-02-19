@@ -39,6 +39,7 @@ export default function Crops() {
     };
 
     const openUpdateModal = (crop) => {
+        console.log("Opening update modal for crop:", crop);
         setFormData({
             cropCode: crop.cropCode,
             cropName: crop.cropName,
@@ -86,6 +87,8 @@ export default function Crops() {
                 cropData.append("image", formData.image);
             }
 
+            console.log("Sending cropData:", Object.fromEntries(cropData.entries()));
+
             if (isUpdateMode) {
                 dispatch(updateCrop(cropData));
             } else {
@@ -99,7 +102,13 @@ export default function Crops() {
 
 
     const handleDelete = (cropCode) => {
-        dispatch(deleteCrop({cropCode}));
+        const isConfirmed = window.confirm("Are you sure you want to delete Crop ?");
+        if (isConfirmed){
+            dispatch(deleteCrop(cropCode));
+        }else{
+            alert("Delete Failed, try again!");
+        }
+
     };
 
     return (
@@ -224,7 +233,7 @@ export default function Crops() {
             )}
 
             <div
-                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                 {crops.map((crop, index) => (
                     <CropCard
                         key={crop.cropCode}

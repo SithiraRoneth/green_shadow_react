@@ -27,22 +27,28 @@ export const saveCrop = createAsyncThunk(
 
 export const updateCrop = createAsyncThunk(
     'crop/updateCrop',
-    async (crop:Crop)=>{
-        try{
-            const data = {
-                ...crop,
-            };
-            const response = await api.put(`/crop/updateCrop/${crop.cropCode}`,data);
+    async (cropData) => { // Accept FormData directly
+        try {
+            const cropCode = cropData.get("cropCode"); // Extract cropCode from FormData
+            console.log("Updating crop with cropCode:", cropCode); // Debugging
+
+            const response = await api.put(`/crop/updateCrop/${cropCode}`, cropData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             return response.data;
-        }catch (error){
-            console.log(error);
+        } catch (error) {
+            console.log("Update crop error:", error);
         }
     }
-)
+);
+
 
 export const deleteCrop = createAsyncThunk(
     'crop/deleteCrop',
     async (cropCode: string) => {
+        console.log(cropCode)
         try {
             await api.delete(`/crop/deleteCrop/${cropCode}`);
             return cropCode;

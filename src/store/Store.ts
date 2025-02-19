@@ -3,14 +3,17 @@ import cropReducer from '../reducers/CropSlice.ts'
 import fieldReducer from '../reducers/FieldSlice.ts'
 import vehicleReducer from '../reducers/VehicleSlice.ts'
 import staffReducer from '../reducers/StaffSlice.ts'
-import equipSlice from '../reducers/EquipmentSlice.ts'
+import equipReducer from '../reducers/EquipmentSlice.ts'
+import authReducer from "../reducers/AuthSlice.ts";
+
 export const Store = configureStore({
     reducer: {
         crops: cropReducer,
         fields: fieldReducer,
         vehicles: vehicleReducer,
         staffs: staffReducer,
-        equips: equipSlice,
+        equips: equipReducer,
+        auths: authReducer,
     }
 })
 

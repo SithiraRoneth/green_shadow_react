@@ -211,7 +211,7 @@ export default function Staff() {
             )}
 
             <div
-                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[400px] overflow-y-auto">
                 {staffs.map((staff, index) => (
                     <StaffCard
                         key={staff.email}

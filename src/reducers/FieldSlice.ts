@@ -25,12 +25,18 @@ export const saveFiled = createAsyncThunk(
 )
 export const updateField = createAsyncThunk(
     'field/updateField',
-    async (field:Field)=>{
-        const data = {
-            ...field,
-        };
-        const response = await api.put(`/field/updateField/${field.fieldCode}`,data);
-        return response.data;
+    async (fieldData)=>{
+        try {
+            const fieldCode = fieldData.get("fieldCode");
+            const response = await api.put(`/field/updateField/${fieldCode}`,fieldData,{
+                headers:{
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            return response.data;
+        }catch (error){
+            console.log("Update Field Error:", error);
+        }
     }
 )
 export const deleteFiled = createAsyncThunk(

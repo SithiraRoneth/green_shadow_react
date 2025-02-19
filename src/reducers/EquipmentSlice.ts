@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {Equipment} from "../model/Equipment.ts";
 import axios from "axios";
-import {updateStaff} from "./StaffSlice.ts";
 
 const initialState:Equipment[] = []
 

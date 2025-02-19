@@ -7,7 +7,7 @@ export default function Navigation() {
     const [hoveredLink, setHoveredLink] = useState("home");
 
     return (
-        <header className="bg-green-900 shadow-lg text-white font-bold mt-5 mx-4 md:mx-12 rounded-full">
+        <header className="bg-green-900 shadow-lg text-white font-bold mt-5 mx-4 md:mx-12 rounded-full sticky top-5 z-0">
             <nav className="px-4 py-4 flex items-center justify-between relative">
                 {/* Logo */}
                 <div className="text-xl font-bold">
@@ -41,7 +41,7 @@ export default function Navigation() {
                     ].map((item) => (
                         <li key={item.name}>
                             <Link
-                                to={`/${item.name}`}
+                                to={`${item.name}`}
                                 className="hover:text-green-400 transition duration-300 flex items-center"
                                 onMouseEnter={() => setHoveredLink(item.name)}
                                 onMouseLeave={() => setHoveredLink(null)}

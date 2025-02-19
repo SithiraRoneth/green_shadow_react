@@ -1,4 +1,6 @@
 export class Auth {
-    username!: string;
+    userEmail!: string;
     password!: string;
+    role!: string;
+    confirmPassword!: string;
 }
