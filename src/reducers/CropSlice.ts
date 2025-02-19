@@ -113,7 +113,6 @@ const CropSlice = createSlice({
             .addCase(deleteCrop.rejected,(state,action)=>{
                 console.log("Failed to delete crop : ", action.payload);
             })
-
     }
 })
 
