@@ -55,8 +55,10 @@ export default function Equipment() {
         if (formData.equipmentCode && formData.equipmentName && formData.equipmentType) {
             if (isUpdateModalOpen) {
                 dispatch(updateEquipment({...formData}));
+                dispatch(getAllEquipments())
             } else {
                 dispatch(saveEquipment({...formData}));
+                dispatch(getAllEquipments())
             }
             console.log("Data save/updated", formData);
             closeUpdateModal()
