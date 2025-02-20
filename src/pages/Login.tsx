@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"; // Fixed import
 import { useNavigate } from "react-router-dom";
 import { loginAuth } from "../reducers/AuthSlice.ts";
 import paddyImage from '../assets/paddy.jpg'
+import Swal from "sweetalert2";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -31,9 +32,18 @@ export default function Login() {
             console.log("Login successful:", result);
             localStorage.setItem("token", result.accessToken);
             window.location.reload();
+            Swal.fire({
+                title: "Login Success",
+                icon: "success",
+                draggable: true
+            });
             navigate("/dash/home");
         } catch (error) {
-            alert("You entered Credentials are not valid");
+            Swal.fire({
+                title: "Credentials Didn't Match",
+                icon: "warning",
+                draggable: true
+            });
             console.log(error)
         }
     };
