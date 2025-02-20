@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import {Vehicle} from "../model/Vehicle.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {addVehicle, deleteVehicle, getAllVehicles, saveVehicles, updateVehicle} from "../reducers/VehicleSlice.ts";
-import {CircleMinus, CircleX, Save} from "lucide-react";
+import {deleteVehicle, getAllVehicles, saveVehicles, updateVehicle} from "../reducers/VehicleSlice.ts";
+import {CircleX, Save} from "lucide-react";
 import VehicleTable from "../components/Vehicle/VehicleTable.tsx";
+import Swal from "sweetalert2";
+import * as sweetalert2 from "sweetalert2";
 
 export default function Vehicles() {
     const [isModelOpen, setIsModelOpen] = useState(false);
@@ -56,28 +57,64 @@ export default function Vehicles() {
         if (formData.licensePlateNo && formData.vehicleCategory && formData.fuelType && formData.color) {
             if (isUpdate) {
                 dispatch(updateVehicle({...formData}));
+                Swal.fire({
+                    title: "Vehicle Updated!",
+                    text: "Your vehicle details have been successfully updated.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             } else {
                 dispatch(saveVehicles({...formData}));
+                Swal.fire({
+                    title: "Vehicle Saved!",
+                    text: "Your vehicle details have been successfully saved.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             }
             console.log("Data save/updated", formData);
+            dispatch(getAllVehicles());
             closeModal();
         } else {
-            alert("Please fill in all fields");
+            Swal.fire({
+                title: "Please fill in all fields",
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
         }
     }
 
-    const handelDelete = (licensePlateNo:string) => {
-        const isConfirmed = window.confirm("Are you sure you want to delete vehicle ?")
-
-        if (isConfirmed){
-            console.log("Deleting Vehicle :", licensePlateNo);
-            if (licensePlateNo){
-                dispatch(deleteVehicle(licensePlateNo));
-            }else {
-                alert("Delete Failed, try again!");
+    const handelDelete = (licensePlateNo: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Deleting Vehicle:", licensePlateNo);
+                if (licensePlateNo) {
+                    dispatch(deleteVehicle(licensePlateNo));
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your vehicle details have been successfully updated.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Delete Failed, try again!",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
             }
-        }
-    }
+        });
+    };
+
     return (
         <>
             <div className="ml-16 items-center justify-center mt-[3%]">
