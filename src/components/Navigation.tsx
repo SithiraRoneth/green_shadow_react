@@ -1,19 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import {Axe, ChevronFirst, Flower2, Home, LandPlot, Leaf, LogOutIcon, PersonStanding, Tractor,} from "lucide-react";
+import Swal from "sweetalert2";
 
 export default function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [hoveredLink, setHoveredLink] = useState("home");
 
     const Logout = ()=>{
-        const isConfirmed = confirm("Are you sure you want to logout?");
-        if (isConfirmed) {
-            localStorage.removeItem("token")
-            window.location.reload();
-        }else {
-            alert("Logout is canceled");
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be Log out",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token")
+                window.location.reload();
+            }else {
+                Swal.fire({
+                    title: "Log Out Canceled",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                });
+            }
+        });
     }
     return (
         <header className="bg-green-900 shadow-lg text-white font-bold mt-5 mx-4 md:mx-12 rounded-full sticky top-5 z-0">
