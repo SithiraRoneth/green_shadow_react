@@ -1,13 +1,13 @@
 export class Vehicle {
-    licensePlate : string;
+    licensePlateNo : string;
     vehicleCategory : string;
     fuelType : string;
-    vehicleColor : string;
+    color : string;
 
     constructor(licensePlate: string, vehicleCategory : string, fuelType : string, vehicleColor : string) {
-        this.licensePlate = licensePlate;
+        this.licensePlateNo = licensePlate;
         this.vehicleCategory = vehicleCategory;
         this.fuelType = fuelType;
-        this.vehicleColor = vehicleColor;
+        this.color = vehicleColor;
     }
 }

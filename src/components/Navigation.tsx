@@ -56,7 +56,7 @@ export default function Navigation() {
 
                 {/* Profile Icon */}
                 <div className="hidden md:flex items-center">
-                    <Link to="/profiles" className="hover:text-green-600 transition duration-300">
+                    <Link to="profiles" className="hover:text-green-600 transition duration-300">
                         <User className="w-6 h-6" />
                     </Link>
                 </div>

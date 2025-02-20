@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"; // Fixed import
 import { useNavigate } from "react-router-dom";
 import { loginAuth } from "../reducers/AuthSlice.ts";
+import paddyImage from '../assets/paddy.jpg'
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -33,19 +34,22 @@ export default function Login() {
             navigate("/dash/home");
         } catch (error) {
             alert("You entered Credentials are not valid");
+            console.log(error)
         }
     };
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
             {/* Left Side - Marketing Section */}
-            <div className="flex-1 bg-teal-800 text-white p-10 flex items-center justify-center">
+            <div style={{ backgroundImage: `url(${paddyImage})` }}
+                 className="flex-1 bg-cover bg-center text-white p-10 flex items-center justify-center"
+            >
                 <div className="max-w-lg space-y-4">
                     <h1 className="text-4xl font-bold leading-snug">
-                        Welcome Back to TuneGO
+                        Welcome Back to GREEN SHADOW
                     </h1>
                     <p className="text-lg">
-                        Log in to manage your creative work, distribute your music, and collect your royalties.
+                        Log in to GreenShadow to oversee your crops, fields, equipment, vehicles, and staff—all in one powerful dashboard
                     </p>
                 </div>
             </div>

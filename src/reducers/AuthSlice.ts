@@ -6,10 +6,9 @@ const api = axios.create({
     baseURL: "http://localhost:3000",
 });
 
-// Define initial state as an object (not an array)
 const initialState = {
-    user: null, // Stores logged-in user data
-    error: null, // Stores any login error
+    user: null,
+    error: null,
 };
 
 export const saveAuth = createAsyncThunk(

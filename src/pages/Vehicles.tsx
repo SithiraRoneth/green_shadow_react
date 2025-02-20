@@ -1,7 +1,7 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Vehicle} from "../model/Vehicle.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {addVehicle, deleteVehicle, saveVehicles, updateVehicle} from "../reducers/VehicleSlice.ts";
+import {addVehicle, deleteVehicle, getAllVehicles, saveVehicles, updateVehicle} from "../reducers/VehicleSlice.ts";
 import {CircleMinus, CircleX, Save} from "lucide-react";
 import VehicleTable from "../components/Vehicle/VehicleTable.tsx";
 
@@ -13,18 +13,22 @@ export default function Vehicles() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        licensePlate: "",
+        licensePlateNo: "",
         vehicleCategory: "",
         fuelType: "",
-        vehicleColor: ""
+        color: ""
     });
+
+    useEffect(() => {
+        dispatch(getAllVehicles());
+    }, [dispatch]);
 
     const openModal = () => {
         setFormData({
-            licensePlate: "",
+            licensePlateNo: "",
             vehicleCategory: "",
             fuelType: "",
-            vehicleColor: ""
+            color: ""
         });
         setIsUpdate(false);
         setIsModelOpen(true);
@@ -49,9 +53,9 @@ export default function Vehicles() {
         });
     }
     const saveVehicle = () => {
-        if (formData.licensePlate && formData.vehicleCategory && formData.fuelType && formData.vehicleColor) {
+        if (formData.licensePlateNo && formData.vehicleCategory && formData.fuelType && formData.color) {
             if (isUpdate) {
-                // dispatch(updateVehicle({...formData}));
+                dispatch(updateVehicle({...formData}));
             } else {
                 dispatch(saveVehicles({...formData}));
             }
@@ -62,11 +66,16 @@ export default function Vehicles() {
         }
     }
 
-    const handelDelete = () => {
-        if (formData.licensePlate) {
-            // dispatch(deleteVehicle({licensePlate: formData.licensePlate}));
-        } else {
-            alert("Delete Failed, try again !");
+    const handelDelete = (licensePlateNo:string) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete vehicle ?")
+
+        if (isConfirmed){
+            console.log("Deleting Vehicle :", licensePlateNo);
+            if (licensePlateNo){
+                dispatch(deleteVehicle(licensePlateNo));
+            }else {
+                alert("Delete Failed, try again!");
+            }
         }
     }
     return (
@@ -98,14 +107,14 @@ export default function Vehicles() {
                         {/* Modal content */}
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="licensePlate" className="custom-label">LicensePlate</label>
+                                <label htmlFor="licensePlateNo" className="custom-label">LicensePlate</label>
                                 <input
-                                    id="licensePlate"
-                                    name="licensePlate"
+                                    id="licensePlateNo"
+                                    name="licensePlateNo"
                                     type="text"
                                     className="custom-input"
                                     placeholder="Enter licensePlate"
-                                    value={formData.licensePlate}
+                                    value={formData.licensePlateNo}
                                     onChange={handleChange}
                                     disabled={isUpdate}
                                 />
@@ -138,18 +147,17 @@ export default function Vehicles() {
                             </div>
 
                             <div>
-                                <label htmlFor="vehicleColor" className="custom-label">Vehicle Color</label>
+                                <label htmlFor="color" className="custom-label">Vehicle Color</label>
                                 <input
-                                    id="vehicleColor"
-                                    name="vehicleColor"
+                                    id="color"
+                                    name="color"
                                     type="text"
                                     className="custom-input"
                                     placeholder="Enter Vehicle Color"
-                                    value={formData.vehicleColor}
+                                    value={formData.color}
                                     onChange={handleChange}
                                 />
                             </div>
-
 
                             {/* Modal Actions */}
                             <div className="mt-6 flex justify-end space-x-2">
@@ -182,7 +190,7 @@ export default function Vehicles() {
                 <ul className="mt-4 space-y-2">
                     {vehicles.map((vehicle, index) => (
                         <VehicleTable
-                            key={vehicle.licensePlate}
+                            key={vehicle.licensePlateNo}
                             index={index}
                             vehicle={vehicle}
                             onUpdate={openUpdateModal}

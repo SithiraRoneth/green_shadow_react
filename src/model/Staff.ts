@@ -6,5 +6,4 @@ export class Staff {
     address!:string;
     contactNo!:string;
     jobrole!:string;
-
 }

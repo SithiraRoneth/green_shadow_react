@@ -2,9 +2,13 @@ import {useDispatch} from "react-redux";
 import {useState} from "react";
 import {saveAuth} from "../reducers/AuthSlice.ts";
 import '../Styles/Input&labels.css'
+import paddyImage from '../assets/paddy 1.jpg';
+import {useNavigate} from "react-router-dom";
 
 export default function Register(){
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         userEmail: "",
         password: "",
@@ -25,6 +29,7 @@ export default function Register(){
                 alert("Password doesn't match")
             }else {
                 dispatch(saveAuth({...formData}));
+                navigate('/')
             }
 
         }else {
@@ -34,14 +39,15 @@ export default function Register(){
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
             {/* Left Side - Marketing Section */}
-            <div className="flex-1 bg-teal-800 text-white p-10 flex items-center justify-center">
+            <div style={{ backgroundImage: `url(${paddyImage})` }}
+                 className="flex-1 bg-cover bg-center text-white p-10 flex items-center justify-center">
                 <div className="max-w-lg space-y-4">
                     <h1 className="text-4xl font-bold leading-snug">
-                        You make the Tune. We make it GO.
+                        Efficient Farm Management, Simplified.
                     </h1>
                     <p className="text-lg">
-                        Securely store your creative work, protect your rights, distribute your music, and collect your
-                        royalties worldwide with TuneGO.
+                        GreenShadow helps you seamlessly manage your crops, fields, equipment,
+                        vehicles, and staff—all in one place. Optimize operations and grow smarter.
                     </p>
                 </div>
             </div>
