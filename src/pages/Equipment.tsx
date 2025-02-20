@@ -4,6 +4,8 @@ import {CircleX, Save} from "lucide-react";
 import '../Styles/Input&labels.css'
 import EquipmentTable from "../components/Equipment/EquipmentTable.tsx";
 import {deleteEquipment, getAllEquipments, saveEquipment, updateEquipment} from "../reducers/EquipmentSlice.ts";
+import Swal from "sweetalert2";
+import {deleteVehicle} from "../reducers/VehicleSlice.ts";
 
 export default function Equipment() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,29 +57,62 @@ export default function Equipment() {
         if (formData.equipmentCode && formData.equipmentName && formData.equipmentType) {
             if (isUpdateModalOpen) {
                 dispatch(updateEquipment({...formData}));
-                dispatch(getAllEquipments())
+                Swal.fire({
+                    title: "Equipment Updated!",
+                    text: "Your equipment details have been successfully updated.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             } else {
                 dispatch(saveEquipment({...formData}));
-                dispatch(getAllEquipments())
+                Swal.fire({
+                    title: "Equipment Saved!",
+                    text: "Your equipment details have been successfully saved.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             }
             console.log("Data save/updated", formData);
+            dispatch(getAllEquipments());
             closeUpdateModal()
         } else {
-            alert("Please fill in all fields");
+            Swal.fire({
+                title: "Please fill in all fields",
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
         }
     }
 
     const handleDelete = (equipmentCode) => {
-        const isConfirmed = window.confirm("Are you sure you want to delete this equipment?");
-
-        if (isConfirmed) {
-            console.log("Deleting Equipment Code:", equipmentCode); // Debugging
-            if (equipmentCode) {
-                dispatch(deleteEquipment(equipmentCode));
-            } else {
-                alert("Delete Failed, try again!");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Deleting Equipment:", equipmentCode);
+                if (equipmentCode) {
+                    dispatch(deleteEquipment(equipmentCode));
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your equipment details have been successfully updated.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Delete Failed, try again!",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
             }
-        }
+        });
     };
 
     return (
