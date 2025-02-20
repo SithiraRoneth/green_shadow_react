@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { Axe, ChevronFirst, Flower2, Home, LandPlot, Leaf, PersonStanding, Tractor, User } from "lucide-react";
+import {Axe, ChevronFirst, Flower2, Home, LandPlot, Leaf, LogOutIcon, PersonStanding, Tractor,} from "lucide-react";
 
 export default function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [hoveredLink, setHoveredLink] = useState("home");
 
+    const Logout = ()=>{
+        const isConfirmed = confirm("Are you sure you want to logout?");
+        if (isConfirmed) {
+            localStorage.removeItem("token")
+            window.location.reload();
+        }else {
+            alert("Logout is canceled");
+        }
+    }
     return (
         <header className="bg-green-900 shadow-lg text-white font-bold mt-5 mx-4 md:mx-12 rounded-full sticky top-5 z-0">
             <nav className="px-4 py-4 flex items-center justify-between relative">
                 {/* Logo */}
                 <div className="text-xl font-bold">
-                    <Link to="/" className="hover:text-green-600 transition duration-300">
+                    <Link to="/green" className="hover:text-green-600 transition duration-300">
                         <Leaf />
                     </Link>
                 </div>
@@ -56,9 +65,7 @@ export default function Navigation() {
 
                 {/* Profile Icon */}
                 <div className="hidden md:flex items-center">
-                    <Link to="profiles" className="hover:text-green-600 transition duration-300">
-                        <User className="w-6 h-6" />
-                    </Link>
+                    <LogOutIcon className="w-6 h-6  hover:text-green-600 transition duration-300" onClick={Logout}/>
                 </div>
             </nav>
         </header>
