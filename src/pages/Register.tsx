@@ -4,6 +4,7 @@ import {saveAuth} from "../reducers/AuthSlice.ts";
 import '../Styles/Input&labels.css'
 import paddyImage from '../assets/paddy 1.jpg';
 import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Register(){
     const dispatch = useDispatch();
@@ -26,9 +27,18 @@ export default function Register(){
     const saveUser = () =>{
         if (formData.userEmail && formData.password && formData.role && formData.confirmPassword){
             if (formData.password !== formData.confirmPassword){
-                alert("Password doesn't match")
+                Swal.fire({
+                    title: "Your Entered Password Didn't Match",
+                    icon: "warning",
+                    draggable: true
+                });
             }else {
                 dispatch(saveAuth({...formData}));
+                Swal.fire({
+                    title: "Registered Success",
+                    icon: "success",
+                    draggable: true
+                });
                 navigate('/')
             }
 
