@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteStaff, getAllStaffs, saveStaffs, updateStaff} from "../reducers/StaffSlice.ts";
 import StaffCard from "../components/Staff/StaffCard.tsx";
+import Swal from "sweetalert2";
 
 export default function Staff() {
     const [isModelOpen, setIsModelOpen] = useState(false);
@@ -60,13 +61,29 @@ export default function Staff() {
         if (formData.email && formData.firstName && formData.lastName && formData.gender && formData.address && formData.contactNo && formData.jobrole) {
             if (isUpdateMode) {
                 dispatch(updateStaff({...formData}));
+                Swal.fire({
+                    title: "Staff Updated!",
+                    text: "Your staff details have been successfully updated.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             } else {
                 dispatch(saveStaffs({...formData}));
+                Swal.fire({
+                    title: "Staff Saved!",
+                    text: "Your staff details have been successfully saved.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             }
             dispatch(getAllStaffs())
             closeUpdateModal();
         } else {
-            alert("Please fill in all fields");
+            Swal.fire({
+                title: "Please fill in all fields",
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
         }
     };
 
@@ -211,7 +228,7 @@ export default function Staff() {
             )}
 
             <div
-                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[400px] overflow-y-auto">
+                className="mt-20 px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[270px] overflow-y-auto">
                 {staffs.map((staff, index) => (
                     <StaffCard
                         key={staff.email}
