@@ -1,50 +1,21 @@
-# React + TypeScript + Vite
+# GREEN SHADOW (REACT)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Green Shadow is a comprehensive farm management system designed to help users efficiently manage crop fields, equipment, vehicles, and staff. The application includes authentication for secure access and utilizes modern web technologies for a seamless experience.
 
-Currently, two official plugins are available:
+## Features
+- Crop Management: Track and manage crop fields with ease.
+- Equipment Tracking: Monitor the status and usage of farm equipment.
+- Vehicle Management: Keep records of vehicles used on the farm.
+- Staff Administration: Manage staff details and assignments.
+- Authentication: Secure login and user authentication.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- Frontend: React, Redux, Tailwind Css
+- Backend: Node
+- API Handling: Axios
+- State Management: Redux
+- Authentication: JWT-based authentication
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Installation 
+- FrontEnd : [https://github.com/SithiraRoneth/green_shadow_react.git]
+- BackEnd : [https://github.com/SithiraRoneth/GreenShadow-BackEnd-Node.git]
