@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {deleteCrop, saveCrop, updateCrop,getAllCrops} from "../reducers/CropSlice.ts";
 import "../Styles/Input&labels.css";
 import CropCard from "../components/Crop/CropCard.tsx";
+import Swal from "sweetalert2";
 
 export default function Crops() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -91,24 +92,62 @@ export default function Crops() {
 
             if (isUpdateMode) {
                 dispatch(updateCrop(cropData));
+                Swal.fire({
+                    title: "Crop Updated!",
+                    text: "Your crop details have been successfully updated.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             } else {
                 dispatch(saveCrop(cropData));
+                Swal.fire({
+                    title: "Crop Saved!",
+                    text: "Your crop details have been successfully saved.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             }
+            dispatch(getAllCrops());
             closeModal();
         } else {
-            alert("Please fill in all fields");
+            Swal.fire({
+                title: "Please fill in all fields",
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
         }
     };
 
 
     const handleDelete = (cropCode) => {
-        const isConfirmed = window.confirm("Are you sure you want to delete Crop ?");
-        if (isConfirmed){
-            dispatch(deleteCrop(cropCode));
-        }else{
-            alert("Delete Failed, try again!");
-        }
-
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Deleting Crop:", cropCode);
+                if (cropCode) {
+                    dispatch(deleteCrop(cropCode));
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your crop details have been successfully updated.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Delete Failed, try again!",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
+            }
+        });
     };
 
     return (

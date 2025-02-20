@@ -14,7 +14,7 @@ export default function CropCard({crop,index,onUpdate,onDelete}){
                 />
             ) : (
                 <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
-                    No Image
+                    Image Loading...
                 </div>
             )}
             <h2 className="text-2xl font-bold">{crop.cropName}</h2>
