@@ -1,10 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {CircleX, Plus, Save, Trash} from "lucide-react";
-import {addField, deleteField, deleteFiled, getAllField, saveFiled, updateField} from "../reducers/FieldSlice.ts";
+import {deleteFiled, getAllField, saveFiled, updateField} from "../reducers/FieldSlice.ts";
 import '../Styles/Input&labels.css'
 import FieldCard from "../components/Field/FieldCard.tsx";
-import {deleteCrop} from "../reducers/CropSlice.ts";
+import Swal from "sweetalert2";
 
 export default function Fields() {
     const dispatch = useDispatch();
@@ -78,23 +78,62 @@ export default function Fields() {
             console.log("Sending fieldData:", Object.fromEntries(fieldData.entries()));
 
             if (isUpdateMode) {
-                dispatch(updateField(fieldData))
+                dispatch(updateField(fieldData));
+                Swal.fire({
+                    title: "Field Updated!",
+                    text: "Your field details have been successfully updated.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             }else {
                 dispatch(saveFiled(fieldData));
+                Swal.fire({
+                    title: "Field Saved!",
+                    text: "Your field details have been successfully saved.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
             }
+            dispatch(getAllField());
             closeModal();
         }else {
-            alert("Please fill in all fields")
+            Swal.fire({
+                title: "Please fill in all fields",
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
         }
     };
 
     const handelDelete = (fieldCode) => {
-        const isConfirmed = window.confirm("Are you sure you want to delete Field ?");
-        if (isConfirmed){
-            dispatch(deleteFiled(fieldCode));
-        }else{
-            alert("Delete Failed, try again!");
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Deleting Field:", fieldCode);
+                if (fieldCode) {
+                    dispatch(deleteFiled(fieldCode));
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your field details have been successfully updated.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Delete Failed, try again!",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
+            }
+        });
     }
     return (
         <>

@@ -14,7 +14,7 @@ export default function FieldCard({field,onUpdate,onDelete,index}) {
                 />
             ) : (
                 <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
-                    No Image
+                    Image Loading ...
                 </div>
             )}
 
