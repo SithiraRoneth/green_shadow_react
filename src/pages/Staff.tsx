@@ -76,6 +76,7 @@ export default function Staff() {
                     confirmButtonText: "OK",
                 });
             }
+            console.log("Data Saved/Updated",formData)
             dispatch(getAllStaffs())
             closeUpdateModal();
         } else {

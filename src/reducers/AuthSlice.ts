@@ -48,7 +48,6 @@ const AuthSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // Handle user registration
             .addCase(saveAuth.fulfilled, (state, action) => {
                 console.log("User saved successfully:", action.payload);
             })
@@ -59,15 +58,14 @@ const AuthSlice = createSlice({
                 console.log("User saving process pending");
             });
 
-        // Handle user login
         builder
             .addCase(loginAuth.fulfilled, (state, action) => {
-                state.user = action.payload; // Store user data
-                state.error = null; // Clear errors if login succeeds
+                state.user = action.payload;
+                state.error = null;
                 console.log("User logged in successfully");
             })
             .addCase(loginAuth.rejected, (state, action) => {
-                state.error = action.payload; // Store error message
+                state.error = action.payload;
                 console.log("Login failed:", action.payload);
             });
     }
